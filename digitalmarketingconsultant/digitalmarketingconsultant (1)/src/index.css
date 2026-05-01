@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Instrument Sans", sans-serif;
+  
+  --color-brand-primary: #bff747;
+  --color-brand-secondary: #24272d;
+  --color-brand-accent: #bff747;
+  --color-brand-dark: #0c1205;
+}
+
+@layer base {
+  body {
+    @apply font-sans bg-brand-dark text-[#d6dae1] antialiased;
+  }
+  
+  h1, h2, h3, h4 {
+    @apply font-display tracking-tight text-white;
+  }
+}
+
+.glass {
+  @apply bg-[#24272d]/80 backdrop-blur-md border border-white/5;
+}
+
+.bento-card {
+  @apply relative overflow-hidden rounded-3xl border border-white/5 bg-[#24272d] p-6 transition-all hover:shadow-xl hover:-translate-y-1;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}

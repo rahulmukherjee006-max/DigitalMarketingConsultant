@@ -1,0 +1,1 @@
+async function run() { const res = await fetch('https://photos.app.goo.gl/BSko5jLfyiCDQWMz9'); const text = await res.text(); const match = text.match(/<meta property="og:image" content="([^"]+)">/); console.log(match ? match[1] : 'not found'); } run();
