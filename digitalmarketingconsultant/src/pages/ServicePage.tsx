@@ -1,0 +1,244 @@
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { motion } from 'motion/react';
+import { ArrowLeft, Check, Plus, Minus, ShoppingCart, Info, TrendingUp, HelpCircle } from 'lucide-react';
+import { servicePagesData } from '../data/servicePagesData';
+import { builderItems } from '../data/builderData';
+import { useCartStore } from '../store/useCartStore';
+
+export default function ServicePage() {
+  const { slug } = useParams<{ slug: string }>();
+  const navigate = useNavigate();
+  const { addItem, removeItem, isInCart, items } = useCartStore();
+  
+  if (!slug || !servicePagesData[slug as keyof typeof servicePagesData]) {
+    return (
+      <div className="min-h-screen bg-[#0c1205] text-white flex flex-col items-center justify-center">
+        <h1 className="text-3xl font-bold mb-4">Service not found</h1>
+        <Link to="/" className="text-brand-accent hover:underline flex items-center gap-2">
+          <ArrowLeft className="w-5 h-5" /> Back to Home
+        </Link>
+      </div>
+    );
+  }
+
+  const data = servicePagesData[slug as keyof typeof servicePagesData];
+  const cartItem = builderItems.find(item => item.id === data.builderId);
+  const inCart = cartItem ? isInCart(cartItem.id) : false;
+
+  const handleToggleCart = () => {
+    if (!cartItem) return;
+    if (inCart) {
+      removeItem(cartItem.id);
+    } else {
+      addItem(cartItem);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-[#0c1205] text-white selection:bg-brand-accent selection:text-brand-dark">
+      {/* Header */}
+      <header className="border-b border-white/5 bg-[#0c1205]/80 backdrop-blur-xl sticky top-0 z-40">
+        <div className="max-w-4xl mx-auto px-6 h-20 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-2 text-[#8997a7] hover:text-white transition-colors group">
+            <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+            <span className="font-bold hidden sm:inline">Back</span>
+          </Link>
+
+          <Link to="/build-plan" className="flex items-center gap-3 bg-[#161a20] px-4 py-2 rounded-full border border-white/5 hover:border-white/20 transition-all group">
+             <div className="relative">
+                <ShoppingCart className="w-5 h-5 text-[#d6dae1] group-hover:text-white transition-colors" />
+                {items.length > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-brand-accent text-[#0c1205] text-[10px] font-bold flex items-center justify-center">
+                    {items.length}
+                  </span>
+                )}
+             </div>
+             <span className="font-bold text-sm hidden sm:inline group-hover:text-brand-accent transition-colors">
+               Your Plan
+             </span>
+          </Link>
+        </div>
+      </header>
+
+      <main className="max-w-4xl mx-auto px-6 py-16 sm:py-24 space-y-16">
+        
+        {/* Title Section */}
+        <section className="text-center space-y-6">
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold font-display tracking-tight text-white"
+          >
+            {data.title}
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-xl sm:text-2xl text-[#8997a7] max-w-2xl mx-auto leading-relaxed"
+          >
+            {data.subtitle}
+          </motion.p>
+        </section>
+
+        <div className="grid md:grid-cols-3 gap-8">
+          
+          <div className="md:col-span-2 space-y-12">
+            {/* What We Do */}
+            <motion.section 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="bg-[#161a20] rounded-[32px] p-8 border border-white/5"
+            >
+              <h2 className="text-2xl font-bold mb-6 flex items-center gap-3 text-white">
+                <Info className="w-6 h-6 text-brand-accent" />
+                What We Do
+              </h2>
+              <ul className="space-y-4">
+                {data.whatWeDo.map((item, idx) => (
+                  <li key={idx} className="flex items-start gap-4 text-[#d6dae1] text-lg">
+                    <span className="text-brand-accent shrink-0 mt-1">◆</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.section>
+
+             {/* Results */}
+             <motion.section 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="bg-[#161a20] rounded-[32px] p-8 border border-brand-accent/20 relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-accent/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+              <h2 className="text-2xl font-bold mb-6 flex items-center gap-3 text-white relative z-10">
+                <TrendingUp className="w-6 h-6 text-brand-accent" />
+                Results You Can Expect
+              </h2>
+              <ul className="space-y-4 relative z-10">
+                {data.results.map((item, idx) => (
+                  <li key={idx} className="flex items-center gap-4 text-white font-bold text-lg">
+                    <Check className="w-5 h-5 text-brand-accent shrink-0" strokeWidth={3} />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.section>
+
+            {/* FAQs */}
+            {data.faqs.length > 0 && (
+              <motion.section 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="space-y-6 pt-4"
+              >
+                <h2 className="text-2xl font-bold flex items-center gap-3 text-white">
+                  <HelpCircle className="w-6 h-6 text-brand-accent" />
+                  Frequently Asked Questions
+                </h2>
+                <div className="space-y-4">
+                  {data.faqs.map((faq, idx) => (
+                    <div key={idx} className="bg-[#161a20] p-6 rounded-2xl border border-white/5">
+                      <p className="font-bold text-lg mb-2 text-white">Q. {faq.q}</p>
+                      <p className="text-[#8997a7] leading-relaxed">{faq.a}</p>
+                    </div>
+                  ))}
+                </div>
+              </motion.section>
+            )}
+          </div>
+
+          {/* Pricing Sidebar */}
+          <div className="md:col-span-1">
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5 }}
+              className="bg-[#161a20] rounded-[32px] border border-white/5 sticky top-28 p-6"
+            >
+              <h3 className="text-xl font-bold text-white mb-2">Pricing</h3>
+              <p className="text-3xl font-display font-bold text-brand-accent mb-6">
+                {data.pricingDetailed.price}
+              </p>
+              
+              {data.pricingDetailed.breakdown.length > 0 && (
+                <div className="space-y-3 mb-6">
+                  <p className="text-sm font-bold text-[#8997a7] uppercase tracking-wider mb-4">Breakdown</p>
+                  {data.pricingDetailed.breakdown.map((item, idx) => (
+                    <div key={idx} className="flex justify-between items-center text-sm">
+                      <span className="text-[#d6dae1]">{item.item}</span>
+                      <span className="font-bold text-white bg-white/5 px-2 py-1 rounded-md">{item.value}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {(data.pricingDetailed as any).note && (
+                <p className="text-sm text-[#8997a7] mb-8 bg-black/30 p-3 rounded-xl border border-white/5">
+                  {(data.pricingDetailed as any).note}
+                </p>
+              )}
+
+              {cartItem && (
+                <button 
+                  onClick={handleToggleCart}
+                  className={`w-full py-4 rounded-xl flex items-center justify-center gap-2 font-bold mb-4 transition-all shadow-lg ${
+                    inCart 
+                      ? 'bg-white/10 text-white hover:bg-red-500/20 hover:text-red-400 hover:border-red-500/20' 
+                      : 'bg-brand-accent text-[#0c1205] hover:opacity-90'
+                  }`}
+                >
+                  {inCart ? (
+                    <>
+                      <Minus className="w-5 h-5 shrink-0" /> Remove from Plan
+                    </>
+                  ) : (
+                    <>
+                      <Plus className="w-5 h-5 shrink-0" /> Add to Plan
+                    </>
+                  )}
+                </button>
+              )}
+
+              <button 
+                onClick={() => navigate('/#contact')} 
+                className="w-full py-4 rounded-xl flex items-center justify-center text-white border border-white/20 hover:bg-white/5 transition-colors font-bold"
+              >
+                Request Free Consultation
+              </button>
+            </motion.div>
+          </div>
+
+        </div>
+        
+        {/* Final CTA */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center pt-8 border-t border-white/5"
+        >
+          <div className="bg-brand-accent p-8 md:p-12 rounded-[32px] relative overflow-hidden shadow-[0_0_40px_-10px_rgba(204,255,0,0.3)]">
+            <h3 className="text-2xl md:text-4xl font-display font-bold text-[#0c1205] mb-6 relative z-10 tracking-tight leading-tight">
+              Not sure if this is right for you? Get a free consultation.
+            </h3>
+             <button 
+                onClick={() => {
+                  navigate('/#contact');
+                  setTimeout(() => {
+                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                  }, 100);
+                }}
+                className="bg-[#0c1205] text-white px-8 py-4 rounded-xl font-bold hover:bg-[#1a260b] transition-colors inline-block relative z-10 shadow-lg"
+             >
+               Contact Us Now &rarr;
+             </button>
+          </div>
+        </motion.div>
+      </main>
+    </div>
+  );
+}
