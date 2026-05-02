@@ -108,16 +108,16 @@ export default function Services() {
   const { addItem, removeItem, isInCart } = useCartStore();
 
   return (
-    <section id="services" className="py-24 px-6 border-t border-white/5 relative bg-[#0c1205]">
+    <section id="services" className="py-24 px-6 border-t border-border-subtle relative bg-bg-primary">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col items-center text-center mb-16">
           <div className="inline-flex items-center px-6 py-2 rounded-full border border-brand-accent text-brand-accent text-xs font-bold uppercase tracking-[0.2em] mb-8">
             WHAT I DO
           </div>
-          <h2 className="text-4xl md:text-5xl lg:text-5xl font-bold mb-6 text-white max-w-4xl tracking-tight leading-tight">
+          <h2 className="text-4xl md:text-5xl lg:text-5xl font-bold mb-6 text-text-main max-w-4xl tracking-tight leading-tight">
             Services That Drive <span className="text-brand-accent">Real Growth</span>
           </h2>
-          <p className="text-[#d6dae1] text-lg max-w-2xl">
+          <p className="text-text-muted text-lg max-w-2xl">
             Result-driven digital marketing solutions to help your business get more traffic, leads, and customers.
           </p>
         </div>
@@ -133,24 +133,24 @@ export default function Services() {
               whileHover={{ scale: 1.05, y: -5 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.05, duration: 0.2 }}
-              className="bg-[#161a20] rounded-[28px] p-8 flex flex-col h-full hover:bg-[#1a1e24] transition-colors border border-white/5 relative group shadow-xl"
+              className="bg-bg-secondary rounded-[28px] p-8 flex flex-col h-full hover:bg-border-subtle/20 transition-colors border border-border-subtle relative group shadow-xl"
             >
               <div className="flex justify-between items-start mb-12">
                 <div className={`w-[60px] h-[60px] rounded-[16px] ${service.bg} flex items-center justify-center shrink-0`}>
                   {/* @ts-ignore */}
                   <service.icon className="w-8 h-8" style={{ color: service.color }} />
                 </div>
-                <div className="text-[56px] font-bold text-white/5 leading-none">
+                <div className="text-[56px] font-bold text-text-main/5 leading-none">
                   {service.num}
                 </div>
               </div>
-              <h3 className="text-[22px] font-bold mb-3 text-white leading-snug pr-4">{service.title}</h3>
+              <h3 className="text-[22px] font-bold mb-3 text-text-main leading-snug pr-4">{service.title}</h3>
               <div className="mb-4">
                  <span className="text-brand-accent font-mono text-sm font-bold bg-brand-accent/10 px-3 py-1 rounded-md inline-block">
                    {service.price}
                  </span>
               </div>
-              <p className="text-[#8997a7] text-[15px] leading-relaxed mb-8 flex-grow pr-2">
+              <p className="text-text-muted text-[15px] leading-relaxed mb-8 flex-grow pr-2">
                 {service.description}
               </p>
               
@@ -163,12 +163,12 @@ export default function Services() {
                     }
                   }}
                   className={`flex-grow h-10 rounded-full text-xs font-bold uppercase tracking-wider flex items-center justify-center transition-all ${
-                    inCart ? 'bg-brand-accent/20 text-brand-accent hover:bg-red-500/20 hover:text-red-400 border border-brand-accent/30 hover:border-red-500/30' : 'bg-white/10 text-white hover:bg-white/20'
+                    inCart ? 'bg-brand-accent/20 text-brand-accent hover:bg-red-500/20 hover:text-red-400 border border-brand-accent/30 hover:border-red-500/30' : 'bg-text-main/10 text-text-main hover:bg-text-main/10'
                   }`}
                 >
                   {inCart ? 'Remove' : 'Add To Plan'}
                 </button>
-                <Link to={`/services/${service.slug}`} className="w-10 h-10 rounded-full border border-brand-accent/50 text-brand-accent flex items-center justify-center hover:bg-brand-accent hover:text-[#0c1205] transition-colors shrink-0">
+                <Link to={`/services/${service.slug}`} className="w-10 h-10 rounded-full border border-brand-accent/50 text-brand-accent flex items-center justify-center hover:bg-brand-accent hover:text-brand-dark transition-colors shrink-0">
                    <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
@@ -178,13 +178,13 @@ export default function Services() {
         </div>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-center">
-          <div className="flex items-center gap-3 text-white text-[17px] font-semibold">
-             <div className="w-[34px] h-[34px] rounded-full bg-brand-accent text-[#0c1205] flex items-center justify-center shrink-0">
+          <div className="flex items-center gap-3 text-text-main text-[17px] font-semibold">
+             <div className="w-[34px] h-[34px] rounded-full bg-brand-accent text-brand-dark flex items-center justify-center shrink-0">
                 <ArrowUpRight className="w-4 h-4" strokeWidth={3} />
              </div>
              Want to grow your business?
           </div>
-          <a href="#contact" className="px-8 py-3.5 rounded-full bg-brand-accent text-[#0c1205] font-bold text-lg hover:opacity-90 transition-opacity">
+          <a href="#contact" className="px-6 py-3 md:px-8 md:py-3.5 rounded-full bg-brand-accent text-brand-dark font-bold text-lg hover:opacity-90 transition-opacity">
             Get Free Consultation
           </a>
         </div>

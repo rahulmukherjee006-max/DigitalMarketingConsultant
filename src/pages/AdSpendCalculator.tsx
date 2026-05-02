@@ -57,10 +57,10 @@ export default function AdSpendCalculator() {
   }, [budget, industry, platform]);
 
   return (
-    <div className="bg-[#0c1205] min-h-screen text-white overflow-x-hidden selection:bg-brand-accent selection:text-brand-dark relative">
+    <div className="bg-bg-primary min-h-screen text-text-main overflow-x-hidden selection:bg-brand-accent selection:text-brand-dark relative">
       <Navbar />
       <main className="pt-24 pb-16">
-        <section className="py-12 px-6 relative bg-[#0c1205]">
+        <section className="py-12 px-6 relative bg-bg-primary">
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]" />
           
           <div className="max-w-5xl mx-auto relative z-10">
@@ -68,10 +68,10 @@ export default function AdSpendCalculator() {
               <div className="inline-block px-4 py-1.5 rounded-full bg-brand-accent/10 border border-brand-accent/20 text-brand-accent font-bold text-xs uppercase tracking-wider mb-4">
                 See Your Potential
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white font-display">
+              <h1 className="text-4xl md:text-5xl font-bold mb-4 text-text-main font-display">
                 Ad Spend Calculator
               </h1>
-              <p className="text-[#8997a7] max-w-2xl mx-auto text-lg">
+              <p className="text-text-muted max-w-2xl mx-auto text-lg">
                 Stop guessing. See exactly what your ad budget could generate with optimized campaigns.
               </p>
             </div>
@@ -82,26 +82,26 @@ export default function AdSpendCalculator() {
               <motion.div 
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="bg-[#161a20] p-8 md:p-10 rounded-[32px] border border-white/5 space-y-8"
+                className="bg-bg-secondary p-8 md:p-10 rounded-[32px] border border-border-subtle space-y-8"
               >
                 <div>
-                  <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-3">
+                  <h3 className="text-xl font-bold text-text-main mb-6 flex items-center gap-3">
                     <Calculator className="text-brand-accent w-6 h-6" />
                     Your Inputs
                   </h3>
                   
                   <div className="space-y-6">
                     <div>
-                      <label className="block text-sm font-bold text-[#8997a7] uppercase tracking-wider mb-3">
+                      <label className="block text-sm font-bold text-text-muted uppercase tracking-wider mb-3">
                         Business Type
                       </label>
-                      <div className="flex bg-[#0c1205] p-1.5 rounded-xl border border-white/5">
+                      <div className="flex bg-bg-primary p-1.5 rounded-xl border border-border-subtle">
                         <button
                           onClick={() => setIndustry('b2b')}
                           className={`flex-1 py-3 px-4 rounded-lg text-sm font-bold transition-all ${
                             industry === 'b2b' 
-                              ? 'bg-white/10 text-white shadow-md' 
-                              : 'text-[#8997a7] hover:text-white'
+                              ? 'bg-text-main/10 text-text-main shadow-md' 
+                              : 'text-text-muted hover:text-text-main'
                           }`}
                         >
                           B2B / Form Leads
@@ -110,8 +110,8 @@ export default function AdSpendCalculator() {
                           onClick={() => setIndustry('ecommerce')}
                           className={`flex-1 py-3 px-4 rounded-lg text-sm font-bold transition-all ${
                             industry === 'ecommerce' 
-                              ? 'bg-white/10 text-white shadow-md' 
-                              : 'text-[#8997a7] hover:text-white'
+                              ? 'bg-text-main/10 text-text-main shadow-md' 
+                              : 'text-text-muted hover:text-text-main'
                           }`}
                         >
                           E-commerce
@@ -120,16 +120,16 @@ export default function AdSpendCalculator() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-bold text-[#8997a7] uppercase tracking-wider mb-3">
+                      <label className="block text-sm font-bold text-text-muted uppercase tracking-wider mb-3">
                         Ad Platform
                       </label>
-                      <div className="flex flex-wrap sm:flex-nowrap bg-[#0c1205] p-1.5 rounded-xl border border-white/5 gap-1">
+                      <div className="flex flex-wrap sm:flex-nowrap bg-bg-primary p-1.5 rounded-xl border border-border-subtle gap-1">
                         <button
                           onClick={() => setPlatform('google')}
                           className={`flex-1 min-w-[30%] py-3 px-2 rounded-lg flex items-center justify-center transition-all ${
                             platform === 'google' 
-                              ? 'bg-white/10 shadow-md' 
-                              : 'opacity-50 hover:opacity-100 hover:bg-white/5'
+                              ? 'bg-text-main/10 shadow-md' 
+                              : 'opacity-50 hover:opacity-100 hover:bg-text-main/5'
                           }`}
                         >
                           <svg viewBox="0 0 24 24" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
@@ -143,8 +143,8 @@ export default function AdSpendCalculator() {
                           onClick={() => setPlatform('facebook')}
                           className={`flex-1 min-w-[30%] py-3 px-2 rounded-lg flex items-center justify-center transition-all ${
                             platform === 'facebook' 
-                              ? 'bg-white/10 shadow-md' 
-                              : 'opacity-50 hover:opacity-100 hover:bg-white/5'
+                              ? 'bg-text-main/10 shadow-md' 
+                              : 'opacity-50 hover:opacity-100 hover:bg-text-main/5'
                           }`}
                         >
                           <svg viewBox="0 0 24 24" className="w-6 h-6" fill="#1877F2" xmlns="http://www.w3.org/2000/svg">
@@ -155,8 +155,8 @@ export default function AdSpendCalculator() {
                           onClick={() => setPlatform('instagram')}
                           className={`flex-1 min-w-[30%] py-3 px-2 rounded-lg flex items-center justify-center transition-all ${
                             platform === 'instagram' 
-                              ? 'bg-white/10 shadow-md' 
-                              : 'opacity-50 hover:opacity-100 hover:bg-white/5'
+                              ? 'bg-text-main/10 shadow-md' 
+                              : 'opacity-50 hover:opacity-100 hover:bg-text-main/5'
                           }`}
                         >
                           <svg viewBox="0 0 24 24" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
@@ -177,7 +177,7 @@ export default function AdSpendCalculator() {
 
                     <div>
                       <div className="flex justify-between items-end mb-3">
-                        <label className="block text-sm font-bold text-[#8997a7] uppercase tracking-wider">
+                        <label className="block text-sm font-bold text-text-muted uppercase tracking-wider">
                           Monthly Ad Budget
                         </label>
                         <span className="text-xl font-bold text-brand-accent font-mono z-10">
@@ -191,9 +191,9 @@ export default function AdSpendCalculator() {
                         step="5000"
                         value={budget}
                         onChange={(e) => setBudget(Number(e.target.value))}
-                        className="w-full h-2 bg-[#0c1205] rounded-lg appearance-none cursor-pointer accent-brand-accent"
+                        className="w-full h-2 bg-bg-primary rounded-lg appearance-none cursor-pointer accent-brand-accent"
                       />
-                      <div className="flex justify-between text-xs text-[#8997a7] mt-2 font-mono">
+                      <div className="flex justify-between text-xs text-text-muted mt-2 font-mono">
                         <span>₹10,000</span>
                         <span>₹5L+</span>
                       </div>
@@ -201,7 +201,7 @@ export default function AdSpendCalculator() {
                   </div>
                 </div>
                 
-                <div className="p-4 bg-[#0c1205] rounded-xl border border-white/5 text-sm text-[#8997a7] flex items-start gap-3">
+                <div className="p-4 bg-bg-primary rounded-xl border border-border-subtle text-sm text-text-muted flex items-start gap-3">
                   <span className="text-brand-accent text-lg leading-none">💡</span>
                   <p>These are conservative estimates based on industry benchmarks. Our goal is to beat these numbers.</p>
                 </div>
@@ -217,43 +217,43 @@ export default function AdSpendCalculator() {
                   <div className="absolute top-0 right-0 w-64 h-64 bg-brand-accent/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
                   
                   <div className="relative z-10">
-                    <p className="text-sm font-bold text-[#8997a7] uppercase tracking-wider mb-2">
+                    <p className="text-sm font-bold text-text-muted uppercase tracking-wider mb-2">
                       Estimated Monthly Revenue
                     </p>
-                    <div className="text-5xl md:text-6xl font-black text-white font-display tracking-tight mb-8">
+                    <div className="text-4xl md:text-6xl font-black text-text-main font-display tracking-tight mb-8">
                       ₹{results.revenue.toLocaleString()}
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
-                      <div className="bg-[#161a20]/80 backdrop-blur p-4 rounded-2xl border border-white/5">
-                        <div className="text-[#8997a7] text-xs font-bold uppercase tracking-wider mb-1 flex items-center gap-2">
+                      <div className="bg-bg-secondary/80 backdrop-blur p-4 rounded-2xl border border-border-subtle">
+                        <div className="text-text-muted text-xs font-bold uppercase tracking-wider mb-1 flex items-center gap-2">
                           <TrendingUp className="w-3.5 h-3.5 text-brand-accent" /> ROAS
                         </div>
-                        <div className="text-2xl font-bold text-white">{results.roas}x</div>
+                        <div className="text-2xl font-bold text-text-main">{results.roas}x</div>
                       </div>
                       
                       {industry === 'b2b' ? (
-                        <div className="bg-[#161a20]/80 backdrop-blur p-4 rounded-2xl border border-white/5">
-                          <div className="text-[#8997a7] text-xs font-bold uppercase tracking-wider mb-1 flex items-center gap-2">
+                        <div className="bg-bg-secondary/80 backdrop-blur p-4 rounded-2xl border border-border-subtle">
+                          <div className="text-text-muted text-xs font-bold uppercase tracking-wider mb-1 flex items-center gap-2">
                             <Users className="w-3.5 h-3.5 text-brand-accent" /> Leads
                           </div>
-                          <div className="text-2xl font-bold text-white">{results.leads.toLocaleString()}</div>
+                          <div className="text-2xl font-bold text-text-main">{results.leads.toLocaleString()}</div>
                         </div>
                       ) : (
-                        <div className="bg-[#161a20]/80 backdrop-blur p-4 rounded-2xl border border-white/5">
-                          <div className="text-[#8997a7] text-xs font-bold uppercase tracking-wider mb-1 flex items-center gap-2">
+                        <div className="bg-bg-secondary/80 backdrop-blur p-4 rounded-2xl border border-border-subtle">
+                          <div className="text-text-muted text-xs font-bold uppercase tracking-wider mb-1 flex items-center gap-2">
                             <ShoppingCart className="w-3.5 h-3.5 text-brand-accent" /> Sales
                           </div>
-                          <div className="text-2xl font-bold text-white">{results.sales.toLocaleString()}</div>
+                          <div className="text-2xl font-bold text-text-main">{results.sales.toLocaleString()}</div>
                         </div>
                       )}
 
-                      <div className="bg-[#161a20]/80 backdrop-blur p-4 rounded-2xl border border-white/5 col-span-2">
+                      <div className="bg-bg-secondary/80 backdrop-blur p-4 rounded-2xl border border-border-subtle col-span-2">
                           <div className="flex justify-between items-center mb-1">
-                              <span className="text-[#8997a7] text-xs font-bold uppercase tracking-wider">Estimated Traffic</span>
-                              <span className="text-white font-bold">{results.clicks.toLocaleString()} visitors</span>
+                              <span className="text-text-muted text-xs font-bold uppercase tracking-wider">Estimated Traffic</span>
+                              <span className="text-text-main font-bold">{results.clicks.toLocaleString()} visitors</span>
                           </div>
-                          <div className="w-full bg-[#0c1205] h-1.5 rounded-full overflow-hidden">
+                          <div className="w-full bg-bg-primary h-1.5 rounded-full overflow-hidden">
                               <div className="bg-brand-accent/50 h-full w-full rounded-full"></div>
                           </div>
                       </div>
@@ -263,7 +263,7 @@ export default function AdSpendCalculator() {
                 
                 <Link 
                   to="/#contact"
-                  className="block w-full py-5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-center font-bold text-white transition-all text-lg shadow-lg hover:border-brand-accent/30"
+                  className="block w-full py-4 md:py-5 rounded-2xl bg-text-main/5 hover:bg-text-main/10 border border-border-subtle text-center font-bold text-text-main transition-all text-lg shadow-lg hover:border-brand-accent/30"
                 >
                   Get Your Custom Growth Plan
                 </Link>
@@ -279,7 +279,7 @@ export default function AdSpendCalculator() {
       {items.length > 0 && (
         <Link 
           to="/build-plan" 
-          className="fixed bottom-[148px] right-6 z-50 flex items-center justify-center gap-2 bg-[#161a20] border-2 border-brand-accent text-white px-5 py-3 rounded-full shadow-[0_0_20px_rgba(204,255,0,0.3)] hover:scale-105 transition-transform"
+          className="fixed bottom-[148px] right-6 z-50 flex items-center justify-center gap-2 bg-bg-secondary border-2 border-brand-accent text-text-main px-5 py-3 rounded-full shadow-[0_0_20px_rgba(204,255,0,0.3)] hover:scale-105 transition-transform"
         >
           <ShoppingCart className="w-5 h-5 text-brand-accent" />
           <span className="font-bold">{items.length} item{items.length > 1 ? 's' : ''} in Plan</span>

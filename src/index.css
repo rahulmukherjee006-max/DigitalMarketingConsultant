@@ -1,32 +1,67 @@
 @import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
+:root {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --border-color: rgba(0, 0, 0, 0.1);
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --brand-accent: #16a34a; /* green-600 */
+  --brand-dark: #ffffff;
+}
+
+.dark {
+  --bg-primary: #0c1205;
+  --bg-secondary: #24272d;
+  --text-primary: #ffffff;
+  --text-secondary: #d6dae1;
+  --border-color: rgba(255, 255, 255, 0.05);
+  --glass-bg: rgba(36, 39, 45, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.05);
+  --brand-accent: #bff747;
+  --brand-dark: #0c1205;
+}
+
 @theme {
   --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Instrument Sans", sans-serif;
   
-  --color-brand-primary: #bff747;
-  --color-brand-secondary: #24272d;
-  --color-brand-accent: #bff747;
-  --color-brand-dark: #0c1205;
+  --color-brand-primary: var(--brand-accent);
+  --color-brand-secondary: var(--bg-secondary);
+  --color-brand-accent: var(--brand-accent);
+  --color-brand-dark: var(--brand-dark);
+  
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-text-main: var(--text-primary);
+  --color-text-muted: var(--text-secondary);
+  --color-border-subtle: var(--border-color);
 }
 
 @layer base {
   body {
-    @apply font-sans bg-brand-dark text-[#d6dae1] antialiased;
+    @apply font-sans bg-bg-primary text-text-muted antialiased transition-colors duration-300;
+    overflow-x: hidden;
+    width: 100%;
+    word-break: break-word;
   }
   
   h1, h2, h3, h4 {
-    @apply font-display tracking-tight text-white;
+    @apply font-display tracking-tight text-text-main transition-colors duration-300;
   }
 }
 
 .glass {
-  @apply bg-[#24272d]/80 backdrop-blur-md border border-white/5;
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
 }
 
 .bento-card {
-  @apply relative overflow-hidden rounded-3xl border border-white/5 bg-[#24272d] p-6 transition-all hover:shadow-xl hover:-translate-y-1;
+  @apply relative overflow-hidden rounded-3xl border border-border-subtle bg-bg-secondary p-6 transition-all hover:shadow-xl hover:-translate-y-1;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -36,9 +71,9 @@
   background: transparent;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--border-color);
   border-radius: 10px;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(137, 151, 167, 0.5);
 }

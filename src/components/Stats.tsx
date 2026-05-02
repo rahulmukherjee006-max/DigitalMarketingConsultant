@@ -42,7 +42,7 @@ export default function Stats() {
   ];
 
   return (
-    <section className="py-20 px-6 bg-[#24272d] text-white overflow-hidden relative border-y border-white/5">
+    <section className="py-20 px-6 bg-bg-secondary text-text-main overflow-hidden relative border-y border-border-subtle">
       {/* Decorative BG element */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-32 bg-brand-accent/20 blur-[100px]" />
       
@@ -59,7 +59,7 @@ export default function Stats() {
               <div className={`text-4xl md:text-6xl font-bold font-display text-brand-accent mb-2 ${stat.isDynamic ? 'transition-all duration-500' : ''}`}>
                 {stat.value}
               </div>
-              <div className="text-[#d6dae1] text-sm uppercase tracking-widest font-semibold">
+              <div className="text-text-muted text-sm uppercase tracking-widest font-semibold">
                 {stat.label}
               </div>
             </motion.div>

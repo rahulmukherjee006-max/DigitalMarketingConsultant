@@ -55,10 +55,10 @@ const caseStudies = [
 const BoldResult = ({ text }: { text: string }) => {
   const parts = text.split(/\*\*(.*?)\*\*/);
   return (
-    <span className="text-[#d6dae1]">
+    <span className="text-text-muted">
       {parts.map((part, index) => {
         if (index % 2 !== 0) {
-          return <strong key={index} className="text-white font-bold text-[16px]">{part}</strong>;
+          return <strong key={index} className="text-text-main font-bold text-[16px]">{part}</strong>;
         }
         return part;
       })}
@@ -68,11 +68,11 @@ const BoldResult = ({ text }: { text: string }) => {
 
 export default function CaseStudies() {
   return (
-    <section id="case-studies" className="py-24 px-6 relative z-10 bg-[#0c1205]">
+    <section id="case-studies" className="py-24 px-6 relative z-10 bg-bg-primary">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white font-display">Real Results, Not Just Promises</h2>
-          <p className="text-[#8997a7] max-w-2xl mx-auto text-lg">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-text-main font-display">Real Results, Not Just Promises</h2>
+          <p className="text-text-muted max-w-2xl mx-auto text-lg">
             This is where you actually win clients. See how we've helped Indian businesses scale predictably.
           </p>
         </div>
@@ -85,12 +85,12 @@ export default function CaseStudies() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className={`flex flex-col ${index % 2 !== 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-8 lg:gap-12 items-center bg-[#161a20] p-6 lg:p-10 rounded-[32px] border border-white/5 relative overflow-hidden`}
+              className={`flex flex-col ${index % 2 !== 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-8 lg:gap-12 items-center bg-bg-secondary p-6 lg:p-10 rounded-[32px] border border-border-subtle relative overflow-hidden`}
             >
               <div className="absolute top-0 right-0 w-96 h-96 bg-brand-accent/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
               <div className="w-full lg:w-1/2 rounded-2xl overflow-hidden shadow-xl relative group">
-                <div className="absolute inset-0 bg-[#0c1205]/20 group-hover:bg-transparent transition-colors z-10 duration-500" />
+                <div className="absolute inset-0 bg-bg-primary/20 group-hover:bg-transparent transition-colors z-10 duration-500" />
                 <img 
                   src={study.image} 
                   alt={study.category} 
@@ -104,24 +104,24 @@ export default function CaseStudies() {
                   <div className="inline-block px-4 py-1.5 rounded-full bg-brand-accent/10 border border-brand-accent/20 text-brand-accent font-bold text-xs uppercase tracking-wider mb-4">
                     Case Study {index + 1} — {study.category}
                   </div>
-                  <h3 className="text-3xl font-bold text-white mb-2 tracking-tight">{study.client}</h3>
+                  <h3 className="text-3xl font-bold text-text-main mb-2 tracking-tight">{study.client}</h3>
                 </div>
 
                 <div className="space-y-6">
                   <div>
-                    <h4 className="flex items-center gap-2 text-white font-bold mb-2">
+                    <h4 className="flex items-center gap-2 text-text-main font-bold mb-2">
                       <Target className="w-5 h-5 text-brand-accent" /> Goal
                     </h4>
-                    <p className="text-[#8997a7] leading-relaxed">{study.goal}</p>
+                    <p className="text-text-muted leading-relaxed">{study.goal}</p>
                   </div>
 
                   <div>
-                    <h4 className="flex items-center gap-2 text-white font-bold mb-3">
+                    <h4 className="flex items-center gap-2 text-text-main font-bold mb-3">
                       <Lightbulb className="w-5 h-5 text-brand-accent" /> What We Did
                     </h4>
                     <ul className="space-y-2.5">
                        {study.whatWeDid.map((item, i) => (
-                         <li key={i} className="flex items-start gap-3 text-[#d6dae1] leading-relaxed">
+                         <li key={i} className="flex items-start gap-3 text-text-muted leading-relaxed">
                            <span className="text-brand-accent mt-1 text-xs shrink-0">◆</span>
                            <span className="text-[15px]">{item}</span>
                          </li>
@@ -129,9 +129,9 @@ export default function CaseStudies() {
                     </ul>
                   </div>
 
-                  <div className="bg-[#0c1205]/60 p-6 rounded-2xl border border-white/5 relative overflow-hidden">
+                  <div className="bg-bg-primary/60 p-6 rounded-2xl border border-border-subtle relative overflow-hidden">
                     <div className="absolute left-0 top-0 bottom-0 w-1 bg-brand-accent" />
-                    <h4 className="flex items-center gap-2 text-white font-bold mb-4 text-lg">
+                    <h4 className="flex items-center gap-2 text-text-main font-bold mb-4 text-lg">
                       <TrendingUp className="w-5 h-5 text-brand-accent" /> Results
                     </h4>
                     <div className="space-y-3.5">
@@ -155,14 +155,14 @@ export default function CaseStudies() {
                viewport={{ once: true }}
                className="bg-brand-accent p-8 md:p-12 rounded-[32px] max-w-3xl w-full relative overflow-hidden shadow-[0_0_40px_-10px_rgba(204,255,0,0.3)]"
             >
-               <h3 className="text-2xl md:text-4xl font-display font-bold text-[#0c1205] mb-6 relative z-10 tracking-tight leading-tight">
+               <h3 className="text-2xl md:text-5xl font-display font-bold text-brand-dark mb-6 relative z-10 tracking-tight leading-tight">
                  Want results like this for your business? Get a free consultation.
                </h3>
                <button 
                   onClick={() => {
                     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="bg-[#0c1205] text-white px-8 py-4 rounded-xl font-bold hover:bg-[#1a260b] transition-colors inline-block relative z-10 shadow-lg"
+                  className="bg-bg-primary text-text-main px-6 py-3.5 md:px-8 md:py-4 rounded-xl font-bold hover:bg-bg-secondary hover:opacity-90 transition-all inline-block relative z-10 shadow-lg"
                >
                  Request Free Consultation &rarr;
                </button>

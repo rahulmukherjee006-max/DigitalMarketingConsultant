@@ -47,16 +47,16 @@ const faqs = [
 
 export default function FAQ() {
   return (
-    <section id="faq" className="py-24 px-6 border-t border-white/5 relative bg-[#0c1205]">
+    <section id="faq" className="py-24 px-6 border-t border-border-subtle relative bg-bg-primary">
       <div className="max-w-4xl mx-auto">
         <div className="flex flex-col items-center text-center mb-16">
           <div className="inline-flex items-center px-6 py-2 rounded-full border border-brand-accent text-brand-accent text-xs font-bold uppercase tracking-[0.2em] mb-8">
             FAQ
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white tracking-tight">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-text-main tracking-tight">
             Frequently Asked <span className="text-brand-accent">Questions</span>
           </h2>
-          <p className="text-[#d6dae1] text-lg max-w-2xl">
+          <p className="text-text-muted text-lg max-w-2xl">
             Everything you need to know about our services and pricing.
           </p>
         </div>
@@ -67,12 +67,12 @@ export default function FAQ() {
           ))}
         </div>
 
-        <div className="mt-16 text-center bg-[#161a20] rounded-2xl p-8 border border-white/5">
-          <h3 className="text-2xl font-bold text-white mb-4">Still have questions?</h3>
-          <p className="text-[#8997a7] mb-8">Get a free consultation and we'll guide you step-by-step.</p>
+        <div className="mt-16 text-center bg-bg-secondary rounded-2xl p-8 border border-border-subtle">
+          <h3 className="text-2xl font-bold text-text-main mb-4">Still have questions?</h3>
+          <p className="text-text-muted mb-8">Get a free consultation and we'll guide you step-by-step.</p>
           <a
             href="#contact"
-            className="inline-block px-8 py-3.5 rounded-full bg-brand-accent text-[#0c1205] font-bold text-lg hover:opacity-90 transition-opacity"
+            className="inline-block px-6 py-3 md:px-8 md:py-3.5 rounded-full bg-brand-accent text-brand-dark font-bold text-lg hover:opacity-90 transition-opacity"
           >
             Get Free Consultation
           </a>
@@ -91,14 +91,14 @@ const FAQItem: React.FC<{ faq: typeof faqs[0], index: number }> = ({ faq, index 
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.05 }}
-      className="bg-[#161a20] border border-white/5 rounded-2xl overflow-hidden"
+      className="bg-bg-secondary border border-border-subtle rounded-2xl overflow-hidden"
     >
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between w-full p-6 text-left hover:bg-[#1a1e24] transition-colors"
+        className="flex items-center justify-between w-full p-6 text-left hover:bg-border-subtle/20 transition-colors"
       >
-        <span className="text-lg font-bold text-white pr-8">{faq.question}</span>
-        <span className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center shrink-0 text-brand-accent">
+        <span className="text-lg font-bold text-text-main pr-8">{faq.question}</span>
+        <span className="w-8 h-8 rounded-full bg-text-main/5 flex items-center justify-center shrink-0 text-brand-accent">
           {isOpen ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
         </span>
       </button>
@@ -110,7 +110,7 @@ const FAQItem: React.FC<{ faq: typeof faqs[0], index: number }> = ({ faq, index 
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="px-6 pb-6 text-[#8997a7] leading-relaxed whitespace-pre-line">
+            <div className="px-6 pb-6 text-text-muted leading-relaxed whitespace-pre-line">
               {faq.answer}
             </div>
           </motion.div>

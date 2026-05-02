@@ -1,9 +1,161 @@
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowLeft, Check, Plus, Minus, ShoppingCart, ChevronDown, AlertCircle, X } from 'lucide-react';
+import { ArrowLeft, Check, Plus, Minus, ShoppingCart, ChevronDown, AlertCircle, Sparkles, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import React, { useState, useMemo, useEffect } from 'react';
 import { useCartStore, CartItem } from '../store/useCartStore';
 import { builderItems } from '../data/builderData';
+
+interface WizardProps {
+  onComplete: (recommendedIds: string[]) => void;
+  onClose: () => void;
+}
+
+const AutoSuggestWizard: React.FC<WizardProps> = ({ onComplete, onClose }) => {
+  const [step, setStep] = useState(1);
+  const [goal, setGoal] = useState('');
+  const [budget, setBudget] = useState('');
+  const [needsWeb, setNeedsWeb] = useState('');
+
+  const goals = [
+    { id: 'leads', title: 'Generate Leads & Sales Quickly', icon: 'zap' },
+    { id: 'organic', title: 'Long-term Organic Growth', icon: 'trending-up' },
+    { id: 'brand', title: 'Establish Brand Presence', icon: 'globe' },
+    { id: 'web', title: 'Build/Revamp a Website', icon: 'layout' }
+  ];
+
+  const budgets = [
+    { id: 'low', title: 'Under ₹15,000 /mo', desc: 'Focus on single most effective channel' },
+    { id: 'med', title: '₹15,000 - ₹30,000 /mo', desc: 'Good for starting multi-channel marketing' },
+    { id: 'high', title: '₹30,000 - ₹50,000 /mo', desc: 'Accelerated growth & campaigns' },
+    { id: 'enterprise', title: 'Above ₹50,000 /mo', desc: 'Full-scale digital dominance' }
+  ];
+
+  const websiteNeeds = [
+    { id: 'lp', title: 'I just need a Landing Page' },
+    { id: 'full', title: 'I need a full Website' },
+    { id: 'none', title: 'My current website is fine' }
+  ];
+
+  const handleComplete = () => {
+    let ids: string[] = [];
+    
+    // Logic for packages/services
+    if (budget === 'low') {
+      if (goal === 'leads') ids.push('srv-meta-ads');
+      else if (goal === 'organic') ids.push('srv-seo');
+      else if (goal === 'brand') ids.push('srv-meta-ads');
+      else ids.push('plan-starter'); 
+    } else if (budget === 'med') {
+      if (goal === 'leads' || goal === 'brand') ids.push('plan-starter');
+      else if (goal === 'organic') ids.push('srv-seo', 'srv-cro');
+      else ids.push('plan-starter');
+    } else if (budget === 'high') {
+      ids.push('plan-growth');
+    } else if (budget === 'enterprise') {
+      ids.push('plan-scale');
+    } else {
+      ids.push('plan-starter');
+    }
+
+    // Logic for addons
+    if (needsWeb === 'lp') ids.push('add-lp-basic');
+    if (needsWeb === 'full') ids.push('add-web-basic');
+
+    // Deduplicate
+    ids = Array.from(new Set(ids));
+    onComplete(ids);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-bg-primary/80 backdrop-blur-sm" onClick={onClose}></div>
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="w-full max-w-2xl bg-bg-secondary rounded-3xl border border-border-subtle p-6 md:p-8 shadow-2xl relative z-10 custom-scrollbar max-h-[90vh] overflow-y-auto"
+      >
+        <button onClick={onClose} className="absolute top-4 right-4 p-2 text-text-muted hover:text-text-main">
+          <X className="w-5 h-5" />
+        </button>
+
+        <div className="mb-8">
+          <h2 className="text-2xl md:text-3xl font-display font-bold text-text-main mb-2">Build My Perfect Plan</h2>
+          <p className="text-text-muted text-sm md:text-base">Answer 3 quick questions and we'll recommend the best services for your goals and budget.</p>
+          
+          <div className="flex gap-2 mt-6">
+            {[1, 2, 3].map(i => (
+              <div key={i} className={`h-2 flex-1 rounded-full ${i <= step ? 'bg-brand-accent' : 'bg-bg-primary border border-border-subtle'}`}></div>
+            ))}
+          </div>
+        </div>
+
+        {step === 1 && (
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-4">
+            <h3 className="text-xl font-bold mb-4">1. What is your primary goal?</h3>
+            <div className="grid sm:grid-cols-2 gap-3">
+              {goals.map(g => (
+                <button 
+                  key={g.id}
+                  onClick={() => { setGoal(g.id); setStep(2); }}
+                  className={`p-4 rounded-xl border text-left transition-all ${goal === g.id ? 'border-brand-accent bg-brand-accent/10' : 'border-border-subtle hover:border-brand-accent/50'}`}
+                >
+                  <p className="font-bold text-text-main text-sm">{g.title}</p>
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        {step === 2 && (
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-4">
+            <h3 className="text-xl font-bold mb-4">2. What's your estimated monthly marketing budget?</h3>
+            <div className="grid sm:grid-cols-2 gap-3">
+              {budgets.map(b => (
+                <button 
+                  key={b.id}
+                  onClick={() => { setBudget(b.id); setStep(3); }}
+                  className={`p-4 rounded-xl border text-left transition-all ${budget === b.id ? 'border-brand-accent bg-brand-accent/10' : 'border-border-subtle hover:border-brand-accent/50'}`}
+                >
+                  <p className="font-bold text-text-main text-sm">{b.title}</p>
+                  <p className="text-xs text-text-muted mt-1">{b.desc}</p>
+                </button>
+              ))}
+            </div>
+            <button onClick={() => setStep(1)} className="text-sm font-medium text-text-muted hover:text-text-main mt-4">&larr; Back</button>
+          </motion.div>
+        )}
+
+        {step === 3 && (
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-4">
+            <h3 className="text-xl font-bold mb-4">3. Do you need a new website or landing page?</h3>
+            <div className="grid gap-3">
+              {websiteNeeds.map(w => (
+                <button 
+                  key={w.id}
+                  onClick={() => { setNeedsWeb(w.id); }}
+                  className={`p-4 rounded-xl border text-left transition-all ${needsWeb === w.id ? 'border-brand-accent bg-brand-accent/10' : 'border-border-subtle hover:border-brand-accent/50'}`}
+                >
+                  <p className="font-bold text-text-main text-sm">{w.title}</p>
+                </button>
+              ))}
+            </div>
+            
+            <div className="flex justify-between items-center mt-6 pt-6 border-t border-border-subtle">
+              <button onClick={() => setStep(2)} className="text-sm font-medium text-text-muted hover:text-text-main">&larr; Back</button>
+              <button 
+                disabled={!needsWeb}
+                onClick={handleComplete}
+                className="px-6 py-3 bg-brand-accent text-brand-dark rounded-xl font-bold shadow-lg hover:opacity-90 transition-opacity disabled:opacity-50"
+              >
+                Show My Plan
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </motion.div>
+    </div>
+  );
+};
 
 const addonGroups = [
   {
@@ -28,6 +180,7 @@ export default function PlanBuilder() {
   const { items, addItem, removeItem, isInCart, isWomenEntrepreneur, toggleWomenEntrepreneur } = useCartStore();
   const [activeTab, setActiveTab] = useState<'plan' | 'service' | 'addon'>('plan');
   const [errorMsg, setErrorMsg] = useState('');
+  const [showWizard, setShowWizard] = useState(false);
 
   useEffect(() => {
     if (errorMsg) {
@@ -62,6 +215,22 @@ export default function PlanBuilder() {
       }
     }
     addItem(item);
+  };
+
+  const handleWizardComplete = (recommendedIds: string[]) => {
+    // Clear out items
+    items.forEach(item => removeItem(item.id));
+
+    // Wait a tick then add new items
+    setTimeout(() => {
+      recommendedIds.forEach(id => {
+        const item = builderItems.find(i => i.id === id);
+        if (item && !isInCart(item.id)) addItem(item);
+      });
+      setShowWizard(false);
+      setActiveTab('plan'); // reset to plans tab
+      setErrorMsg("We've added our recommended services to your plan! Feel free to modify them.");
+    }, 50);
   };
 
   const handleCheckout = () => {
@@ -100,59 +269,77 @@ export default function PlanBuilder() {
   };
 
   return (
-    <div className="bg-[#0c1205] min-h-screen text-white selection:bg-brand-accent selection:text-brand-dark pb-24">
+    <div className="bg-bg-primary min-h-screen text-text-main selection:bg-brand-accent selection:text-brand-dark pb-24">
       <AnimatePresence>
+        {showWizard && (
+          <AutoSuggestWizard 
+            onClose={() => setShowWizard(false)} 
+            onComplete={handleWizardComplete} 
+          />
+        )}
         {errorMsg && (
           <motion.div 
-            initial={{ opacity: 0, y: 50, x: '-50%' }}
-            animate={{ opacity: 1, y: 0, x: '-50%' }}
-            exit={{ opacity: 0, y: 50, x: '-50%' }}
-            className="fixed bottom-6 left-1/2 z-50 bg-[#EF4444] text-white px-6 py-4 rounded-xl shadow-xl flex items-center gap-3 font-bold border border-red-400"
+            initial={{ opacity: 0, y: 50, x: '-50%', scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, x: '-50%', scale: 1 }}
+            exit={{ opacity: 0, y: 50, x: '-50%', scale: 0.9 }}
+            className="fixed bottom-6 left-1/2 z-50 flex items-center gap-4 bg-bg-secondary border-2 border-brand-accent text-text-main px-6 py-4 rounded-2xl shadow-xl max-w-md w-[calc(100%-2rem)] md:w-full"
           >
-            <AlertCircle className="w-5 h-5 shrink-0" />
-            <span className="text-sm sm:text-base leading-tight">{errorMsg}</span>
-            <button onClick={() => setErrorMsg("")} className="ml-2 hover:opacity-70 p-1"><X className="w-4 h-4" /></button>
+            <div className="w-10 h-10 rounded-full bg-brand-accent flex items-center justify-center shrink-0 shadow-inner">
+               <Sparkles className="w-5 h-5 text-brand-dark" />
+            </div>
+            <span className="font-bold flex-1 text-sm md:text-base leading-tight">{errorMsg}</span>
+            <button onClick={() => setErrorMsg("")} className="ml-1 hover:bg-text-main/10 rounded-full p-1.5 transition-colors"><X className="w-4 h-4 text-text-muted" /></button>
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* Header */}
-      <header className="border-b border-white/5 bg-[#0c1205]/80 backdrop-blur-xl sticky top-0 z-40">
+      <header className="border-b border-border-subtle bg-bg-primary/80 backdrop-blur-xl sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 text-[#8997a7] hover:text-white transition-colors font-medium">
+          <Link to="/" className="flex items-center gap-2 text-text-muted hover:text-text-main transition-colors font-medium">
             <ArrowLeft className="w-5 h-5" />
             Back to Home
           </Link>
           <div className="flex items-center gap-2">
-             <div className="w-8 h-8 bg-brand-accent rounded-lg flex items-center justify-center font-bold text-[#0c1205]">
+             <div className="w-8 h-8 bg-brand-accent rounded-lg flex items-center justify-center font-bold text-brand-dark">
                 D
              </div>
-             <span className="font-display font-bold text-xl tracking-tight text-white hidden sm:block">DigitalMarketingConsultant</span>
+             <span className="font-display font-bold text-xl tracking-tight text-text-main hidden sm:block">Digital Marketing Consultant</span>
           </div>
         </div>
       </header>
 
       <main className="max-w-7xl mx-auto px-6 pt-12">
         <div className="mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Build Your <span className="text-brand-accent">Custom Plan</span></h1>
-          <p className="text-[#8997a7] text-lg max-w-2xl">
-            Choose a complete package, select individual services, or add extra capabilities. Mix and match to fit your exact business needs.
-          </p>
+          <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
+            <div>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4">Build Your <span className="text-brand-accent">Custom Plan</span></h1>
+              <p className="text-text-muted text-lg max-w-2xl">
+                Choose a complete package, select individual services, or add extra capabilities. Mix and match to fit your exact business needs.
+              </p>
+            </div>
+            <button 
+              onClick={() => setShowWizard(true)}
+              className="shrink-0 group flex items-center justify-center gap-2 bg-text-main text-bg-primary px-5 py-3 md:px-6 md:py-3 rounded-full font-bold text-sm md:text-base shadow-lg hover:opacity-90 transition-all border border-transparent hover:border-brand-accent/30"
+            >
+              ✨ Best for You Auto Suggestion
+            </button>
+          </div>
         </div>
 
         <div className="grid lg:grid-cols-12 gap-12">
           
           {/* Builder Section */}
           <div className="lg:col-span-8">
-            <div className="flex items-center gap-2 mb-8 bg-[#161a20] p-2 rounded-xl sticky top-24 z-30">
+            <div className="flex items-center gap-2 mb-8 bg-bg-secondary p-2 rounded-xl sticky top-24 z-30">
               {(['plan', 'service', 'addon'] as const).map(tab => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
                   className={`flex-1 py-3 px-4 rounded-lg font-bold text-sm tracking-wide capitalize transition-all ${
                     activeTab === tab 
-                      ? 'bg-brand-accent text-[#0c1205] shadow-lg' 
-                      : 'text-[#8997a7] hover:text-white hover:bg-white/5'
+                      ? 'bg-brand-accent text-brand-dark shadow-lg' 
+                      : 'text-text-muted hover:text-text-main hover:bg-text-main/5'
                   }`}
                 >
                   {tab}s
@@ -177,22 +364,22 @@ export default function PlanBuilder() {
                       className={`p-6 rounded-2xl border transition-all cursor-pointer ${
                         inCart 
                           ? 'bg-brand-accent/5 border-brand-accent shadow-[0_0_20px_-5px_rgba(204,255,0,0.2)]' 
-                          : 'bg-[#161a20] border-white/5 hover:border-white/20'
+                          : 'bg-bg-secondary border-border-subtle hover:border-text-main/20'
                       }`}
                       onClick={() => inCart ? removeItem(item.id) : handleAddItem(item)}
                     >
                       <div className="flex flex-col sm:flex-row gap-4 sm:items-center justify-between">
                         <div>
-                          <h3 className="text-xl font-bold text-white mb-1">{item.title}</h3>
-                          <p className="text-[#8997a7] text-sm">
+                          <h3 className="text-xl font-bold text-text-main mb-1">{item.title}</h3>
+                          <p className="text-text-muted text-sm">
                             {formatPrice(item.minPrice, item.maxPrice)} {item.isMonthly ? '/ month' : '(one-time)'}
                           </p>
                         </div>
                         <button 
                           className={`shrink-0 w-12 h-12 rounded-full flex items-center justify-center transition-colors ${
                             inCart 
-                              ? 'bg-brand-accent text-[#0c1205]' 
-                              : 'bg-white/10 text-white group-hover:bg-brand-accent group-hover:text-[#0c1205]'
+                              ? 'bg-brand-accent text-brand-dark' 
+                              : 'bg-text-main/10 text-text-main group-hover:bg-brand-accent group-hover:text-brand-dark'
                           }`}
                         >
                           {inCart ? <Check className="w-6 h-6" /> : <Plus className="w-6 h-6" />}
@@ -207,15 +394,15 @@ export default function PlanBuilder() {
 
           {/* Cart Sidebar */}
           <div className="lg:col-span-4">
-            <div className="bg-[#161a20] border border-white/5 rounded-[28px] p-6 lg:p-8 sticky top-24 shadow-2xl">
+            <div className="bg-bg-secondary border border-border-subtle rounded-[28px] p-6 lg:p-8 sticky top-24 shadow-2xl">
               <div className="flex items-center gap-3 mb-8">
                 <ShoppingCart className="w-6 h-6 text-brand-accent" />
-                <h2 className="text-2xl font-bold text-white">Your Plan</h2>
+                <h2 className="text-2xl font-bold text-text-main">Your Plan</h2>
               </div>
 
               {items.length === 0 ? (
-                <div className="text-center py-12 px-6 border-2 border-dashed border-white/10 rounded-2xl">
-                  <p className="text-[#8997a7]">Select packages to see your estimate.</p>
+                <div className="text-center py-12 px-6 border-2 border-dashed border-border-subtle rounded-2xl">
+                  <p className="text-text-muted">Select packages to see your estimate.</p>
                 </div>
               ) : (
                 <>
@@ -223,14 +410,14 @@ export default function PlanBuilder() {
                     {items.map(item => (
                       <div key={item.id} className="flex justify-between items-start gap-4">
                         <div>
-                          <p className="text-white font-medium text-sm leading-tight mb-1">{item.title}</p>
-                          <p className="text-[#8997a7] text-xs">
+                          <p className="text-text-main font-medium text-sm leading-tight mb-1">{item.title}</p>
+                          <p className="text-text-muted text-xs">
                              {item.minPrice === item.maxPrice ? `₹${item.minPrice.toLocaleString()}` : `₹${item.minPrice.toLocaleString()} – ₹${item.maxPrice.toLocaleString()}`}
                           </p>
                         </div>
                         <button 
                           onClick={() => removeItem(item.id)}
-                          className="text-[#8997a7] hover:text-red-400 p-1"
+                          className="text-text-muted hover:text-red-400 p-1"
                         >
                           <Minus className="w-4 h-4" />
                         </button>
@@ -238,26 +425,26 @@ export default function PlanBuilder() {
                     ))}
                   </div>
 
-                  <div className="space-y-4 pt-6 mt-6 border-t border-white/10">
+                  <div className="space-y-4 pt-6 mt-6 border-t border-border-subtle">
                     <label className="flex items-start gap-3 p-4 rounded-xl cursor-pointer bg-brand-accent/5 border border-brand-accent/20 hover:bg-brand-accent/10 transition-colors">
                       <div className="relative flex items-center justify-center mt-0.5">
                         <input 
                           type="checkbox" 
                           checked={isWomenEntrepreneur}
                           onChange={(e) => toggleWomenEntrepreneur(e.target.checked)}
-                          className="peer appearance-none w-5 h-5 border-2 border-brand-accent/50 rounded bg-[#0c1205] checked:bg-brand-accent checked:border-brand-accent transition-colors"
+                          className="peer appearance-none w-5 h-5 border-2 border-brand-accent/50 rounded bg-bg-primary checked:bg-brand-accent checked:border-brand-accent transition-colors"
                         />
-                        <Check className="absolute w-3.5 h-3.5 text-[#0c1205] opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" />
+                        <Check className="absolute w-3.5 h-3.5 text-brand-dark opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" />
                       </div>
                       <div>
-                        <p className="font-bold text-white text-sm">Women Entrepreneur? (30% OFF)</p>
-                        <p className="text-xs text-[#8997a7] mt-1 relative z-10">We will verify this later with proper documents.</p>
+                        <p className="font-bold text-text-main text-sm">Women Entrepreneur? (30% OFF)</p>
+                        <p className="text-xs text-text-muted mt-1 relative z-10">We will verify this later with proper documents.</p>
                       </div>
                     </label>
 
                     <div className="flex justify-between items-baseline pt-4">
-                      <span className="text-[#d6dae1]">Monthly</span>
-                      <span className="font-bold text-white text-lg">
+                      <span className="text-text-muted">Monthly</span>
+                      <span className="font-bold text-text-main text-lg">
                         {monthlyTotalMin === monthlyTotalMax 
                            ? `₹${monthlyTotalMin.toLocaleString()}`
                            : `₹${monthlyTotalMin.toLocaleString()} – ₹${monthlyTotalMax.toLocaleString()}`
@@ -265,7 +452,7 @@ export default function PlanBuilder() {
                       </span>
                     </div>
                     <div className="flex justify-between items-baseline">
-                      <span className="text-[#d6dae1]">One-Time</span>
+                      <span className="text-text-muted">One-Time</span>
                       <span className="font-bold text-brand-accent text-lg">
                         {oneTimeTotalMin === oneTimeTotalMax 
                            ? `₹${oneTimeTotalMin.toLocaleString()}`
@@ -277,11 +464,11 @@ export default function PlanBuilder() {
 
                   <button 
                     onClick={handleCheckout}
-                    className="w-full mt-8 bg-brand-accent text-[#0c1205] py-4 rounded-full font-bold text-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+                    className="w-full mt-8 bg-brand-accent text-brand-dark py-3.5 md:py-4 rounded-full font-bold text-base md:text-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
                   >
                     Discuss & Buy Now
                   </button>
-                  <p className="text-center text-[#8997a7] text-xs mt-4">
+                  <p className="text-center text-text-muted text-xs mt-4">
                     All prices are estimates. Final price will be confirmed over discussion.
                   </p>
                 </>
@@ -309,14 +496,14 @@ const AddonGroupBuilder: React.FC<{ group: { title: string; items: CartItem[] },
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
-      className="bg-[#161a20] rounded-2xl border border-white/5 overflow-hidden"
+      className="bg-bg-secondary rounded-2xl border border-border-subtle overflow-hidden"
     >
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full text-left p-6 flex items-center justify-between hover:bg-white/[0.02] transition-colors"
+        className="w-full text-left p-6 flex items-center justify-between hover:bg-text-main/[0.02] transition-colors"
       >
-        <h3 className="text-xl font-bold text-white">{group.title}</h3>
-        <ChevronDown className={`w-5 h-5 text-[#8997a7] transition-transform ${isOpen ? 'rotate-180 text-brand-accent' : ''}`} />
+        <h3 className="text-xl font-bold text-text-main">{group.title}</h3>
+        <ChevronDown className={`w-5 h-5 text-text-muted transition-transform ${isOpen ? 'rotate-180 text-brand-accent' : ''}`} />
       </button>
 
       <AnimatePresence>
@@ -327,7 +514,7 @@ const AddonGroupBuilder: React.FC<{ group: { title: string; items: CartItem[] },
             exit={{ height: 0, opacity: 0 }}
             className="px-6 pb-6"
           >
-            <div className="space-y-3 pt-4 border-t border-white/5">
+            <div className="space-y-3 pt-4 border-t border-border-subtle">
               {group.items.map(item => {
                 const inCart = isInCart(item.id);
                 return (
@@ -337,11 +524,11 @@ const AddonGroupBuilder: React.FC<{ group: { title: string; items: CartItem[] },
                     className={`flex items-center justify-between p-4 rounded-xl border transition-all cursor-pointer ${
                       inCart 
                         ? 'bg-brand-accent/10 border-brand-accent' 
-                        : 'bg-white/5 border-white/5 hover:border-white/20'
+                        : 'bg-text-main/5 border-border-subtle hover:border-text-main/20'
                     }`}
                   >
                     <div>
-                      <p className="font-bold text-white mb-1.5 text-[15px]">{item.title}</p>
+                      <p className="font-bold text-text-main mb-1.5 text-[15px]">{item.title}</p>
                       <span className="text-brand-accent font-mono text-xs px-2 py-1 bg-brand-accent/10 rounded-md">
                         {formatPrice(item.minPrice, item.maxPrice)} {item.isMonthly ? '/ month' : '(one-time)'}
                       </span>
@@ -349,8 +536,8 @@ const AddonGroupBuilder: React.FC<{ group: { title: string; items: CartItem[] },
                     <button 
                       className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
                         inCart 
-                          ? 'bg-brand-accent text-[#0c1205]' 
-                          : 'bg-white/10 text-white'
+                          ? 'bg-brand-accent text-brand-dark' 
+                          : 'bg-text-main/10 text-text-main'
                       }`}
                     >
                       {inCart ? <Check className="w-4 h-4" /> : <Plus className="w-4 h-4" />}

@@ -24,11 +24,11 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section id="testimonials" className="py-24 px-6 border-t border-white/5">
+    <section id="testimonials" className="py-24 px-6 border-t border-border-subtle">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">Loved by Indian Founders</h2>
-          <p className="text-[#d6dae1] max-w-2xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-text-main">Loved by Indian Founders</h2>
+          <p className="text-text-muted max-w-2xl mx-auto">
             Join 100+ businesses who have trusted us with their digital growth.
           </p>
         </div>
@@ -41,10 +41,10 @@ export default function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="bg-[#24272d] p-8 rounded-[32px] border border-white/5 relative shadow-sm hover:shadow-md transition-all"
+              className="bg-bg-secondary p-8 rounded-[32px] border border-border-subtle relative shadow-sm hover:shadow-md transition-all"
             >
               <Quote className="w-10 h-10 text-brand-accent/20 absolute top-8 right-8" />
-              <p className="text-[#d6dae1] mb-8 italic relative z-10 leading-relaxed text-lg">
+              <p className="text-text-muted mb-8 italic relative z-10 leading-relaxed text-lg">
                 "{t.text}"
               </p>
               <div className="flex items-center gap-4">
@@ -52,8 +52,8 @@ export default function Testimonials() {
                   {t.avatar}
                 </div>
                 <div>
-                  <h4 className="font-bold text-white">{t.name}</h4>
-                  <p className="text-xs text-[#d6dae1] font-medium">{t.role}</p>
+                  <h4 className="font-bold text-text-main">{t.name}</h4>
+                  <p className="text-xs text-text-muted font-medium">{t.role}</p>
                 </div>
               </div>
             </motion.div>

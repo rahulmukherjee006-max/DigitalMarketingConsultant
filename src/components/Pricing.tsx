@@ -109,16 +109,16 @@ export default function Pricing() {
   const { addItem, removeItem, isInCart } = useCartStore();
 
   return (
-    <section id="pricing" className="py-24 px-6 border-t border-white/5 relative bg-[#0c1205]">
+    <section id="pricing" className="py-24 px-6 border-t border-border-subtle relative bg-bg-primary">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col items-center text-center mb-16">
           <div className="inline-flex items-center px-6 py-2 rounded-full border border-brand-accent text-brand-accent text-xs font-bold uppercase tracking-[0.2em] mb-8">
             PACKAGES
           </div>
-          <h2 className="text-4xl md:text-5xl lg:text-5xl font-bold mb-6 text-white max-w-4xl tracking-tight leading-tight">
+          <h2 className="text-4xl md:text-5xl lg:text-5xl font-bold mb-6 text-text-main max-w-4xl tracking-tight leading-tight">
             Digital Marketing <span className="text-brand-accent">Packages</span>
           </h2>
-          <p className="text-[#d6dae1] text-lg max-w-2xl">
+          <p className="text-text-muted text-lg max-w-2xl">
             Choose the right plan to scale your business. Transparent pricing, no hidden fees.
           </p>
         </div>
@@ -134,38 +134,38 @@ export default function Pricing() {
               whileHover={{ scale: 1.05, y: -5 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1, duration: 0.2 }}
-              className={`bg-[#161a20] rounded-[28px] p-8 flex flex-col h-full hover:bg-[#1a1e24] transition-colors relative group ${
-                pkg.popular ? 'border-2 border-brand-accent shadow-[0_0_40px_-15px_rgba(204,255,0,0.3)]' : 'border border-white/5 shadow-xl'
+              className={`bg-bg-secondary rounded-[28px] p-8 flex flex-col h-full hover:bg-border-subtle/20 transition-colors relative group ${
+                pkg.popular ? 'border-2 border-brand-accent shadow-[0_0_40px_-15px_rgba(204,255,0,0.3)]' : 'border border-border-subtle shadow-xl'
               }`}
             >
               {pkg.popular && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand-accent text-[#0c1205] px-4 py-1 rounded-full text-sm font-bold shadow-lg whitespace-nowrap">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand-accent text-brand-dark px-4 py-1 rounded-full text-sm font-bold shadow-lg whitespace-nowrap">
                   Most Popular
                 </div>
               )}
               
               <div className="mb-6">
                 <div className="text-brand-accent text-sm font-bold uppercase tracking-wider mb-2">{pkg.badge}</div>
-                <h3 className="text-2xl font-bold text-white mb-4">{pkg.name}</h3>
+                <h3 className="text-2xl font-bold text-text-main mb-4">{pkg.name}</h3>
                 <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-bold text-white">{pkg.price}</span>
-                  <span className="text-[#8997a7]">{pkg.frequency}</span>
+                  <span className="text-4xl font-bold text-text-main">{pkg.price}</span>
+                  <span className="text-text-muted">{pkg.frequency}</span>
                 </div>
               </div>
 
-              <div className="bg-black/20 rounded-xl p-4 mb-8">
-                <span className="text-sm text-[#d6dae1] font-medium block mb-1">Best for:</span>
-                <p className="text-white text-sm font-bold">{pkg.bestFor}</p>
+              <div className="bg-text-main/5 rounded-xl p-4 mb-8">
+                <span className="text-sm text-text-muted font-medium block mb-1">Best for:</span>
+                <p className="text-text-main text-sm font-bold">{pkg.bestFor}</p>
               </div>
 
               <div className="flex-grow space-y-6">
                 <div>
-                  <p className="text-white font-bold mb-4">Includes:</p>
+                  <p className="text-text-main font-bold mb-4">Includes:</p>
                   <ul className="space-y-3">
                     {pkg.includes.map((item) => (
                       <li key={item} className="flex items-start gap-3">
                         <Check className="w-5 h-5 text-brand-accent shrink-0 mt-0.5" />
-                        <span className="text-[#d6dae1] text-sm leading-tight">{item}</span>
+                        <span className="text-text-muted text-sm leading-tight">{item}</span>
                       </li>
                     ))}
                   </ul>
@@ -173,12 +173,12 @@ export default function Pricing() {
 
                 {pkg.notIncluded && pkg.notIncluded.length > 0 && (
                   <div>
-                    <p className="text-white/50 font-medium mb-4 text-sm uppercase tracking-wider">Not Included:</p>
+                    <p className="text-text-main/50 font-medium mb-4 text-sm uppercase tracking-wider">Not Included:</p>
                     <ul className="space-y-3">
                       {pkg.notIncluded.map((item) => (
                         <li key={item} className="flex items-start gap-3 opacity-50">
                           <X className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
-                          <span className="text-[#d6dae1] text-sm leading-tight line-through">{item}</span>
+                          <span className="text-text-muted text-sm leading-tight line-through">{item}</span>
                         </li>
                       ))}
                     </ul>
@@ -186,7 +186,7 @@ export default function Pricing() {
                 )}
               </div>
 
-              <div className="mt-8 pt-8 border-t border-white/5 space-y-3">
+              <div className="mt-8 pt-8 border-t border-border-subtle space-y-3">
                 <button 
                   onClick={() => {
                     const item = builderItems.find(i => i.id === pkg.id);
@@ -196,8 +196,8 @@ export default function Pricing() {
                   }}
                   className={`w-full py-4 rounded-xl flex items-center justify-center gap-2 font-bold mb-4 transition-all shadow-lg ${
                     inCart 
-                      ? 'bg-white/10 text-white hover:bg-red-500/20 hover:text-red-400 hover:border-red-500/20' 
-                      : 'bg-brand-accent text-[#0c1205] hover:opacity-90'
+                      ? 'bg-text-main/10 text-text-main hover:bg-red-500/20 hover:text-red-400 hover:border-red-500/20' 
+                      : 'bg-brand-accent text-brand-dark hover:opacity-90'
                   }`}
                 >
                   {inCart ? (
@@ -219,7 +219,7 @@ export default function Pricing() {
         {/* Add-ons Section */}
         <div className="mt-20">
            <div className="flex flex-col items-center text-center mb-12">
-            <h3 className="text-2xl md:text-3xl font-bold text-white flex items-center justify-center gap-3">
+            <h3 className="text-2xl md:text-3xl font-bold text-text-main flex items-center justify-center gap-3">
               <Sparkles className="text-brand-accent w-6 h-6" /> 
               Add-On Services (AI-Powered Solutions)
             </h3>
@@ -247,19 +247,19 @@ const AddonCard: React.FC<{ addon: typeof addons[0], index: number }> = ({ addon
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.05, duration: 0.2 }}
-      className="bg-[#161a20] rounded-2xl border border-white/5 hover:border-brand-accent/30 transition-all shadow-lg group relative overflow-hidden flex flex-col"
+      className="bg-bg-secondary rounded-2xl border border-border-subtle hover:border-brand-accent/30 transition-all shadow-lg group relative overflow-hidden flex flex-col"
     >
       <button 
         onClick={() => setIsOpen(!isOpen)}
         className="w-full text-left p-6 flex flex-row items-center justify-between gap-4"
       >
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 bg-black/40 rounded-xl flex items-center justify-center shrink-0 border border-white/5 group-hover:bg-brand-accent/10 transition-colors">
+          <div className="w-12 h-12 bg-text-main/10 rounded-xl flex items-center justify-center shrink-0 border border-border-subtle group-hover:bg-brand-accent/10 transition-colors">
             <addon.icon className="w-6 h-6 text-brand-accent" />
           </div>
-          <h4 className="font-bold text-lg text-white">{addon.title}</h4>
+          <h4 className="font-bold text-lg text-text-main">{addon.title}</h4>
         </div>
-        <ChevronDown className={`w-5 h-5 text-[#8997a7] transition-transform ${isOpen ? 'rotate-180 text-brand-accent' : ''}`} />
+        <ChevronDown className={`w-5 h-5 text-text-muted transition-transform ${isOpen ? 'rotate-180 text-brand-accent' : ''}`} />
       </button>
       
       <AnimatePresence>
@@ -270,21 +270,21 @@ const AddonCard: React.FC<{ addon: typeof addons[0], index: number }> = ({ addon
             exit={{ height: 0, opacity: 0 }}
             className="px-6 pb-6"
           >
-            <div className="space-y-4 pt-4 border-t border-white/5">
+            <div className="space-y-4 pt-4 border-t border-border-subtle">
               {addon.tiers.map((tier) => {
                 const inCart = isInCart(tier.id);
                 return (
-                <div key={tier.name} className="bg-white/5 rounded-xl border border-white/5 transition-colors overflow-hidden flex flex-col">
+                <div key={tier.name} className="bg-text-main/5 rounded-xl border border-border-subtle transition-colors overflow-hidden flex flex-col">
                   <div className="p-4 flex flex-col flex-grow">
                     <div className="flex justify-between items-center mb-3">
-                       <span className="font-bold text-white text-sm">{tier.name}</span>
+                       <span className="font-bold text-text-main text-sm">{tier.name}</span>
                        <span className="text-brand-accent font-mono text-sm px-2 py-1 bg-brand-accent/10 rounded-md">
                          {tier.price}
                        </span>
                     </div>
                     <ul className="space-y-2 mb-4 flex-grow">
                        {tier.features.map(feature => (
-                         <li key={feature} className="flex items-start gap-2 text-xs text-[#8997a7]">
+                         <li key={feature} className="flex items-start gap-2 text-xs text-text-muted">
                             <Check className="w-3.5 h-3.5 text-brand-accent shrink-0 mt-0.5" />
                             <span>{feature}</span>
                          </li>
@@ -301,7 +301,7 @@ const AddonCard: React.FC<{ addon: typeof addons[0], index: number }> = ({ addon
                     className={`w-full py-2.5 text-xs font-bold uppercase tracking-wider flex justify-center items-center gap-2 transition-colors ${
                       inCart 
                         ? 'bg-brand-accent/20 text-brand-accent hover:bg-red-500/20 hover:text-red-400' 
-                        : 'bg-white/5 text-white hover:bg-brand-accent hover:text-[#0c1205]'
+                        : 'bg-text-main/5 text-text-main hover:bg-brand-accent hover:text-brand-dark'
                     }`}
                   >
                     {inCart ? (
