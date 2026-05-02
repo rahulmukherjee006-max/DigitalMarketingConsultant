@@ -11,6 +11,7 @@ import ServicePage from './pages/ServicePage';
 import AdSpendCalculator from './pages/AdSpendCalculator';
 import CaseStudiesPage from './pages/CaseStudiesPage';
 import ScrollToTop from './components/ScrollToTop';
+import BackToTopButton from './components/BackToTopButton';
 
 function ProgressBar() {
   const { scrollYProgress } = useScroll();
@@ -33,6 +34,7 @@ export default function App() {
     <BrowserRouter>
       <ScrollToTop />
       <ProgressBar />
+      <BackToTopButton />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/build-plan" element={<PlanBuilder />} />

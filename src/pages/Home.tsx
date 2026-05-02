@@ -35,7 +35,7 @@ export default function Home() {
       {items.length > 0 && (
         <Link 
           to="/build-plan" 
-          className="fixed bottom-24 right-6 z-50 flex items-center justify-center gap-2 bg-[#161a20] border-2 border-brand-accent text-white px-5 py-3 rounded-full shadow-[0_0_20px_rgba(204,255,0,0.3)] hover:scale-105 transition-transform"
+          className="fixed bottom-[148px] right-6 z-50 flex items-center justify-center gap-2 bg-[#161a20] border-2 border-brand-accent text-white px-5 py-3 rounded-full shadow-[0_0_20px_rgba(204,255,0,0.3)] hover:scale-105 transition-transform"
         >
           <ShoppingCart className="w-5 h-5 text-brand-accent" />
           <span className="font-bold">{items.length} item{items.length > 1 ? 's' : ''} in Plan</span>
