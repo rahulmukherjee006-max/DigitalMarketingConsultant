@@ -6,6 +6,7 @@ import Pricing from '../components/Pricing';
 import FAQ from '../components/FAQ';
 import Stats from '../components/Stats';
 import Testimonials from '../components/Testimonials';
+import RateUs from '../components/RateUs';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import WhatsAppButton from '../components/WhatsAppButton';
@@ -25,6 +26,7 @@ export default function Home() {
         <TrustedBy />
         <Services />
         <Testimonials />
+        <RateUs />
         <Pricing />
         <FAQ />
         <Contact />

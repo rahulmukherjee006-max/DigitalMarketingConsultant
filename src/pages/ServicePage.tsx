@@ -1,14 +1,16 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowLeft, Check, Plus, Minus, ShoppingCart, Info, TrendingUp, HelpCircle } from 'lucide-react';
+import { ArrowLeft, Check, Plus, Minus, ShoppingCart, Info, TrendingUp, HelpCircle, Moon, Sun } from 'lucide-react';
 import { servicePagesData } from '../data/servicePagesData';
 import { builderItems } from '../data/builderData';
 import { useCartStore } from '../store/useCartStore';
+import { useTheme } from '../components/ThemeProvider';
 
 export default function ServicePage() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const { addItem, removeItem, isInCart, items } = useCartStore();
+  const { theme, toggleTheme } = useTheme();
   
   if (!slug || !servicePagesData[slug as keyof typeof servicePagesData]) {
     return (
@@ -44,19 +46,28 @@ export default function ServicePage() {
             <span className="font-bold hidden sm:inline">Back</span>
           </Link>
 
-          <Link to="/build-plan" className="flex items-center gap-3 bg-bg-secondary px-4 py-2 rounded-full border border-border-subtle hover:border-text-main/20 transition-all group">
-             <div className="relative">
-                <ShoppingCart className="w-5 h-5 text-text-muted group-hover:text-text-main transition-colors" />
-                {items.length > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-brand-accent text-brand-dark text-[10px] font-bold flex items-center justify-center">
-                    {items.length}
-                  </span>
-                )}
-             </div>
-             <span className="font-bold text-sm hidden sm:inline group-hover:text-brand-accent transition-colors">
-               Your Plan
-             </span>
-          </Link>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={toggleTheme}
+              className="p-2 text-text-muted hover:text-text-main hover:bg-text-main/5 rounded-full transition-colors"
+              aria-label="Toggle theme"
+            >
+              {theme === 'dark' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+            </button>
+            <Link to="/build-plan" className="flex items-center gap-3 bg-bg-secondary px-4 py-2 rounded-full border border-border-subtle hover:border-text-main/20 transition-all group">
+               <div className="relative">
+                  <ShoppingCart className="w-5 h-5 text-text-muted group-hover:text-text-main transition-colors" />
+                  {items.length > 0 && (
+                    <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-brand-accent text-brand-dark text-[10px] font-bold flex items-center justify-center">
+                      {items.length}
+                    </span>
+                  )}
+               </div>
+               <span className="font-bold text-sm hidden sm:inline group-hover:text-brand-accent transition-colors">
+                 Your Plan
+               </span>
+            </Link>
+          </div>
         </div>
       </header>
 
@@ -80,6 +91,22 @@ export default function ServicePage() {
             {data.subtitle}
           </motion.p>
         </section>
+
+        {slug === 'google-ads-management' && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+            className="w-full rounded-[32px] overflow-hidden shadow-2xl border border-border-subtle"
+          >
+            <img 
+              src={theme === 'dark' ? "https://lh3.googleusercontent.com/pw/AP1GczNfeEi35xuw5Okp19OFXd7g-vRA4YV-E_sgXwovqlfUNYPrnldglaWT3aZFvV6Kmdb6Ik4qKPt34mEMy067Nt_f_sg9FhM73uIYnws00wt8o6DYhQ853WzT1JC3BmYKzkXM543ILFNF03rGllHkvskNAw=w1536-h1024-s-no-gm?authuser=0" : "https://lh3.googleusercontent.com/pw/AP1GczNm5i3HtPsOF7slgro68iR5tHHY2y4m8VedWPpEufjkSy-k8mnFFhSNgxvCWRXOxW2Aso-7HPVrCPUy9LcKVDFBku9d3dGVtFgtY1nwijXyTwNl5lukuDcAZ14TUd4dVn4arLOvKr9fvJpwY8nG48iNrw=w1536-h1024-s-no-gm?authuser=0"}
+              alt="Google Ads Service Banner"
+              className="w-full h-auto object-cover"
+              referrerPolicy="no-referrer"
+            />
+          </motion.div>
+        )}
 
         <div className="grid md:grid-cols-3 gap-8">
           

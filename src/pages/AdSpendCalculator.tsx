@@ -21,6 +21,13 @@ export default function AdSpendCalculator() {
     roas: 0
   });
 
+  const [sBizType, setSBizType] = useState('local');
+  const [sLocation, setSLocation] = useState('tier1');
+  const [sRadius, setSRadius] = useState('city');
+  const [sGoal, setSGoal] = useState('grow');
+  const [sPlatform, setSPlatform] = useState('both');
+  const [suggestedBudget, setSuggestedBudget] = useState({ min: 0, max: 0 });
+
   useEffect(() => {
     let cpc, convRate, leadToSale, avgOrderValue;
 
@@ -55,6 +62,39 @@ export default function AdSpendCalculator() {
       roas: Number(roas)
     });
   }, [budget, industry, platform]);
+
+  useEffect(() => {
+    let base = 15000;
+    if (sBizType === 'ecom') base = 30000;
+    else if (sBizType === 'b2b') base = 25000;
+    else if (sBizType === 'realestate') base = 50000;
+
+    let radMult = 1;
+    if (sRadius === 'city') radMult = 1.5;
+    else if (sRadius === 'state') radMult = 2.5;
+    else if (sRadius === 'national') radMult = 4;
+    else if (sRadius === 'global') radMult = 8;
+
+    let locMult = 1;
+    if (sLocation === 'tier1') locMult = 1.5;
+    else if (sLocation === 'tier3') locMult = 0.8;
+
+    let goalMult = 1.5;
+    if (sGoal === 'maintain') goalMult = 1;
+    else if (sGoal === 'aggressive') goalMult = 2.5;
+
+    let platMult = 1;
+    if (sPlatform === 'both') platMult = 1.6;
+    else if (sPlatform === 'google') platMult = 1.2;
+    // meta/facebook/instagram is 1.0
+
+    const finalBudget = base * radMult * locMult * goalMult * platMult;
+    
+    setSuggestedBudget({
+      min: Math.max(10000, Math.floor(finalBudget * 0.8 / 1000) * 1000),
+      max: Math.max(15000, Math.ceil(finalBudget * 1.2 / 1000) * 1000)
+    });
+  }, [sBizType, sLocation, sRadius, sGoal, sPlatform]);
 
   return (
     <div className="bg-bg-primary min-h-screen text-text-main overflow-x-hidden selection:bg-brand-accent selection:text-brand-dark relative">
@@ -98,7 +138,7 @@ export default function AdSpendCalculator() {
                       <div className="flex bg-bg-primary p-1.5 rounded-xl border border-border-subtle">
                         <button
                           onClick={() => setIndustry('b2b')}
-                          className={`flex-1 py-3 px-4 rounded-lg text-sm font-bold transition-all ${
+                          className={`flex-1 py-2 sm:py-3 px-2 sm:px-4 rounded-lg text-xs sm:text-sm font-bold transition-all ${
                             industry === 'b2b' 
                               ? 'bg-text-main/10 text-text-main shadow-md' 
                               : 'text-text-muted hover:text-text-main'
@@ -108,13 +148,13 @@ export default function AdSpendCalculator() {
                         </button>
                         <button
                           onClick={() => setIndustry('ecommerce')}
-                          className={`flex-1 py-3 px-4 rounded-lg text-sm font-bold transition-all ${
+                          className={`flex-1 py-2 sm:py-3 px-2 sm:px-4 rounded-lg text-xs sm:text-sm font-bold transition-all ${
                             industry === 'ecommerce' 
                               ? 'bg-text-main/10 text-text-main shadow-md' 
                               : 'text-text-muted hover:text-text-main'
                           }`}
                         >
-                          E-commerce
+                          E-Commerce
                         </button>
                       </div>
                     </div>
@@ -269,6 +309,133 @@ export default function AdSpendCalculator() {
                 </Link>
               </motion.div>
 
+            </div>
+          </div>
+        </section>
+
+        {/* --- Budget Suggestor Section --- */}
+        <section className="py-16 px-6 relative bg-bg-secondary border-t border-border-subtle">
+          <div className="max-w-4xl mx-auto relative z-10">
+            <div className="text-center mb-12">
+              <div className="inline-block px-4 py-1.5 rounded-full bg-brand-accent/10 border border-brand-accent/20 text-brand-accent font-bold text-xs uppercase tracking-wider mb-4">
+                Not sure how much to spend?
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-text-main font-display">
+                Ad Budget Suggestor
+              </h2>
+              <p className="text-text-muted text-lg">
+                Answer a few quick questions and we'll suggest a starting ad budget based on your goals and market size.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-start">
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-sm font-bold text-text-muted uppercase tracking-wider mb-2">
+                    Business Type
+                  </label>
+                  <select 
+                    value={sBizType} 
+                    onChange={(e) => setSBizType(e.target.value)}
+                    className="w-full bg-bg-primary border border-border-subtle rounded-xl p-3 text-text-main font-medium focus:outline-none focus:border-brand-accent transition-colors"
+                  >
+                    <option value="local">Local Business (Salon, Clinic, etc)</option>
+                    <option value="ecom">E-commerce / D2C</option>
+                    <option value="b2b">B2B Services / Tech</option>
+                    <option value="realestate">Real Estate / High Ticket</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-text-muted uppercase tracking-wider mb-2">
+                    Location Tier
+                  </label>
+                  <select 
+                    value={sLocation} 
+                    onChange={(e) => setSLocation(e.target.value)}
+                    className="w-full bg-bg-primary border border-border-subtle rounded-xl p-3 text-text-main font-medium focus:outline-none focus:border-brand-accent transition-colors"
+                  >
+                    <option value="tier1">Tier 1 / Metro City</option>
+                    <option value="tier2">Tier 2 City</option>
+                    <option value="tier3">Tier 3 City / Town</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-text-muted uppercase tracking-wider mb-2">
+                    Targeting Radius
+                  </label>
+                  <select 
+                    value={sRadius} 
+                    onChange={(e) => setSRadius(e.target.value)}
+                    className="w-full bg-bg-primary border border-border-subtle rounded-xl p-3 text-text-main font-medium focus:outline-none focus:border-brand-accent transition-colors"
+                  >
+                    <option value="local">Local (&lt; 10km)</option>
+                    <option value="city">City-wide</option>
+                    <option value="state">State-wide</option>
+                    <option value="national">Pan India</option>
+                    <option value="global">Global</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-text-muted uppercase tracking-wider mb-2">
+                    Growth Goals
+                  </label>
+                  <select 
+                    value={sGoal} 
+                    onChange={(e) => setSGoal(e.target.value)}
+                    className="w-full bg-bg-primary border border-border-subtle rounded-xl p-3 text-text-main font-medium focus:outline-none focus:border-brand-accent transition-colors"
+                  >
+                    <option value="maintain">Steady (Maintain & Build)</option>
+                    <option value="grow">Growth (Scale Up)</option>
+                    <option value="aggressive">Aggressive (Dominate Market)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-text-muted uppercase tracking-wider mb-2">
+                    Platform Strategy
+                  </label>
+                  <select 
+                    value={sPlatform} 
+                    onChange={(e) => setSPlatform(e.target.value)}
+                    className="w-full bg-bg-primary border border-border-subtle rounded-xl p-3 text-text-main font-medium focus:outline-none focus:border-brand-accent transition-colors"
+                  >
+                    <option value="both">Both (Google + Meta/FB/IG)</option>
+                    <option value="google">Google Ads</option>
+                    <option value="meta">Meta Ads (Facebook/Instagram)</option>
+                    <option value="facebook">Facebook Only</option>
+                    <option value="instagram">Instagram Only</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="bg-brand-accent/5 p-8 rounded-[32px] border border-brand-accent/20 h-full flex flex-col justify-center relative overflow-hidden backdrop-blur-sm shadow-xl">
+                 <div className="absolute top-0 right-0 w-64 h-64 bg-brand-accent/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+                 
+                 <div className="relative z-10 text-center space-y-6">
+                    <p className="text-sm font-bold text-text-muted uppercase tracking-wider">
+                      Suggested Monthly Budget
+                    </p>
+                    <div className="text-4xl lg:text-5xl font-black text-brand-accent font-display tracking-tight">
+                      ₹{suggestedBudget.min.toLocaleString()} - ₹{suggestedBudget.max.toLocaleString()}
+                    </div>
+                    <p className="text-text-muted text-sm px-4">
+                      This is a recommended range to effectively reach your target audience and see meaningful return on ad spend.
+                    </p>
+                    
+                    <button 
+                      onClick={() => {
+                        setBudget(Math.round((suggestedBudget.min + suggestedBudget.max) / 2));
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                      className="mt-4 px-6 py-3 bg-brand-accent text-brand-dark rounded-xl font-bold hover:scale-105 transition-transform"
+                    >
+                      Use Average in Calculator
+                    </button>
+                 </div>
+              </div>
             </div>
           </div>
         </section>

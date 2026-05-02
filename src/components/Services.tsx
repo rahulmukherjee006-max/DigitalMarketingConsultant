@@ -133,7 +133,7 @@ export default function Services() {
               whileHover={{ scale: 1.05, y: -5 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.05, duration: 0.2 }}
-              className="bg-bg-secondary rounded-[28px] p-8 flex flex-col h-full hover:bg-border-subtle/20 transition-colors border border-border-subtle relative group shadow-xl"
+              className="glass-card p-6 md:p-8 flex flex-col h-full hover:bg-border-subtle/20 group shadow-xl"
             >
               <div className="flex justify-between items-start mb-12">
                 <div className={`w-[60px] h-[60px] rounded-[16px] ${service.bg} flex items-center justify-center shrink-0`}>

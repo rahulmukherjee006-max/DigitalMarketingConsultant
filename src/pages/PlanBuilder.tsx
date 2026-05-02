@@ -1,9 +1,10 @@
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowLeft, Check, Plus, Minus, ShoppingCart, ChevronDown, AlertCircle, Sparkles, X } from 'lucide-react';
+import { ArrowLeft, Check, Plus, Minus, ShoppingCart, ChevronDown, AlertCircle, Sparkles, X, Moon, Sun } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import React, { useState, useMemo, useEffect } from 'react';
 import { useCartStore, CartItem } from '../store/useCartStore';
 import { builderItems } from '../data/builderData';
+import { useTheme } from '../components/ThemeProvider';
 
 interface WizardProps {
   onComplete: (recommendedIds: string[]) => void;
@@ -181,6 +182,7 @@ export default function PlanBuilder() {
   const [activeTab, setActiveTab] = useState<'plan' | 'service' | 'addon'>('plan');
   const [errorMsg, setErrorMsg] = useState('');
   const [showWizard, setShowWizard] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     if (errorMsg) {
@@ -195,11 +197,20 @@ export default function PlanBuilder() {
     const total = items.filter(i => i.isMonthly === isMonthly).reduce((acc, curr) => acc + (min ? curr.minPrice : curr.maxPrice), 0);
     return isWomenEntrepreneur ? total * 0.7 : total;
   };
+  
+  const getOriginalTotal = (min: boolean, isMonthly: boolean) => {
+    return items.filter(i => i.isMonthly === isMonthly).reduce((acc, curr) => acc + (min ? curr.minPrice : curr.maxPrice), 0);
+  };
 
   const monthlyTotalMin = calculateTotal(true, true);
   const monthlyTotalMax = calculateTotal(false, true);
   const oneTimeTotalMin = calculateTotal(true, false);
   const oneTimeTotalMax = calculateTotal(false, false);
+  
+  const orgMonthlyTotalMin = getOriginalTotal(true, true);
+  const orgMonthlyTotalMax = getOriginalTotal(false, true);
+  const orgOneTimeTotalMin = getOriginalTotal(true, false);
+  const orgOneTimeTotalMax = getOriginalTotal(false, false);
 
   const formatPrice = (min: number, max: number) => {
     if (min === max) return `₹${min.toLocaleString()}`;
@@ -207,6 +218,14 @@ export default function PlanBuilder() {
   };
 
   const handleAddItem = (item: CartItem) => {
+    if (item.type === 'plan') {
+      const hasPlan = items.some(i => i.type === 'plan');
+      if (hasPlan) {
+        setErrorMsg("You can only select one complete plan at a time. Please remove the existing plan first.");
+        return;
+      }
+    }
+    
     if (item.type === 'addon') {
       const hasCoreItem = items.some(i => i.type === 'plan' || i.type === 'service');
       if (!hasCoreItem) {
@@ -285,7 +304,7 @@ export default function PlanBuilder() {
             className="fixed bottom-6 left-1/2 z-50 flex items-center gap-4 bg-bg-secondary border-2 border-brand-accent text-text-main px-6 py-4 rounded-2xl shadow-xl max-w-md w-[calc(100%-2rem)] md:w-full"
           >
             <div className="w-10 h-10 rounded-full bg-brand-accent flex items-center justify-center shrink-0 shadow-inner">
-               <Sparkles className="w-5 h-5 text-brand-dark" />
+               <AlertCircle className="w-5 h-5 text-brand-dark" />
             </div>
             <span className="font-bold flex-1 text-sm md:text-base leading-tight">{errorMsg}</span>
             <button onClick={() => setErrorMsg("")} className="ml-1 hover:bg-text-main/10 rounded-full p-1.5 transition-colors"><X className="w-4 h-4 text-text-muted" /></button>
@@ -301,9 +320,14 @@ export default function PlanBuilder() {
             Back to Home
           </Link>
           <div className="flex items-center gap-2">
-             <div className="w-8 h-8 bg-brand-accent rounded-lg flex items-center justify-center font-bold text-brand-dark">
-                D
-             </div>
+             <button
+               onClick={toggleTheme}
+               className="p-2 sm:mr-2 text-text-muted hover:text-text-main transition-colors"
+               aria-label="Toggle theme"
+             >
+               {theme === 'dark' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+             </button>
+             <img src="https://lh3.googleusercontent.com/pw/AP1GczMeL8nQ-BOtc2fF7rteVLd2LgDoyeAcV9mavjs_DGghRA-IxfbnqfCH8mwoQii3qCqLv4mBPuHxbROx1BdCjX77IXEggPiqbKMnNxy0A30jkSMlkw0o=w400" alt="Logo" className="w-8 h-8 rounded-lg object-cover shrink-0" referrerPolicy="no-referrer" />
              <span className="font-display font-bold text-xl tracking-tight text-text-main hidden sm:block">Digital Marketing Consultant</span>
           </div>
         </div>
@@ -443,22 +467,40 @@ export default function PlanBuilder() {
                     </label>
 
                     <div className="flex justify-between items-baseline pt-4">
-                      <span className="text-text-muted">Monthly</span>
-                      <span className="font-bold text-text-main text-lg">
-                        {monthlyTotalMin === monthlyTotalMax 
-                           ? `₹${monthlyTotalMin.toLocaleString()}`
-                           : `₹${monthlyTotalMin.toLocaleString()} – ₹${monthlyTotalMax.toLocaleString()}`
-                        }
-                      </span>
+                      <span className="text-text-muted shrink-0 mr-4">Monthly</span>
+                      <div className="flex flex-col items-end">
+                        {isWomenEntrepreneur && orgMonthlyTotalMax > 0 && (
+                          <span className="text-xs text-text-muted line-through mb-0.5">
+                            {orgMonthlyTotalMin === orgMonthlyTotalMax 
+                               ? `₹${orgMonthlyTotalMin.toLocaleString()}`
+                               : `₹${orgMonthlyTotalMin.toLocaleString()} – ₹${orgMonthlyTotalMax.toLocaleString()}`}
+                          </span>
+                        )}
+                        <span className="font-bold text-text-main text-lg text-right">
+                          {monthlyTotalMin === monthlyTotalMax 
+                             ? `₹${monthlyTotalMin.toLocaleString()}`
+                             : `₹${monthlyTotalMin.toLocaleString()} – ₹${monthlyTotalMax.toLocaleString()}`
+                          }
+                        </span>
+                      </div>
                     </div>
-                    <div className="flex justify-between items-baseline">
-                      <span className="text-text-muted">One-Time</span>
-                      <span className="font-bold text-brand-accent text-lg">
-                        {oneTimeTotalMin === oneTimeTotalMax 
-                           ? `₹${oneTimeTotalMin.toLocaleString()}`
-                           : `₹${oneTimeTotalMin.toLocaleString()} – ₹${oneTimeTotalMax.toLocaleString()}`
-                        }
-                      </span>
+                    <div className="flex justify-between items-baseline mt-2">
+                      <span className="text-text-muted shrink-0 mr-4">One-Time</span>
+                      <div className="flex flex-col items-end">
+                        {isWomenEntrepreneur && orgOneTimeTotalMax > 0 && (
+                          <span className="text-xs text-text-muted line-through mb-0.5">
+                            {orgOneTimeTotalMin === orgOneTimeTotalMax 
+                               ? `₹${orgOneTimeTotalMin.toLocaleString()}`
+                               : `₹${orgOneTimeTotalMin.toLocaleString()} – ₹${orgOneTimeTotalMax.toLocaleString()}`}
+                          </span>
+                        )}
+                        <span className="font-bold text-brand-accent text-lg text-right">
+                          {oneTimeTotalMin === oneTimeTotalMax 
+                             ? `₹${oneTimeTotalMin.toLocaleString()}`
+                             : `₹${oneTimeTotalMin.toLocaleString()} – ₹${oneTimeTotalMax.toLocaleString()}`
+                          }
+                        </span>
+                      </div>
                     </div>
                   </div>
 

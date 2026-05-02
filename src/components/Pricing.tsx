@@ -134,12 +134,12 @@ export default function Pricing() {
               whileHover={{ scale: 1.05, y: -5 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1, duration: 0.2 }}
-              className={`bg-bg-secondary rounded-[28px] p-8 flex flex-col h-full hover:bg-border-subtle/20 transition-colors relative group ${
-                pkg.popular ? 'border-2 border-brand-accent shadow-[0_0_40px_-15px_rgba(204,255,0,0.3)]' : 'border border-border-subtle shadow-xl'
+              className={`glass-card p-6 md:p-8 flex flex-col h-full hover:bg-border-subtle/20 relative group ${
+                pkg.popular ? 'border-2 border-brand-accent shadow-[0_0_40px_-15px_rgba(204,255,0,0.3)]' : 'shadow-xl'
               }`}
             >
               {pkg.popular && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand-accent text-brand-dark px-4 py-1 rounded-full text-sm font-bold shadow-lg whitespace-nowrap">
+                <div className="bg-brand-accent text-brand-dark px-4 py-1 rounded-full text-xs font-bold shadow-sm whitespace-nowrap self-start mb-4 uppercase tracking-wider">
                   Most Popular
                 </div>
               )}
@@ -247,7 +247,7 @@ const AddonCard: React.FC<{ addon: typeof addons[0], index: number }> = ({ addon
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.05, duration: 0.2 }}
-      className="bg-bg-secondary rounded-2xl border border-border-subtle hover:border-brand-accent/30 transition-all shadow-lg group relative overflow-hidden flex flex-col"
+      className="glass-card hover:border-brand-accent/30 shadow-lg group relative flex flex-col"
     >
       <button 
         onClick={() => setIsOpen(!isOpen)}

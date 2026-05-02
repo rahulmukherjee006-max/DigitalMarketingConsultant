@@ -97,7 +97,7 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="mt-20 relative"
         >
-          <div className="relative z-10 rounded-[40px] border-8 border-border-subtle overflow-hidden shadow-2xl">
+          <div className="relative z-10 rounded-[20px] md:rounded-[40px] border-4 md:border-8 border-border-subtle overflow-hidden shadow-2xl">
             <img 
               src="https://lh3.googleusercontent.com/pw/AP1GczPFDZPh4dc7DbJJaegpbW8ralBfGrnGk_XZpS8DQUyVY_qG78waxG5_Aaui4hLUccH2y6qhhAXK0iaQcrpMTSrfoNk_mITLH34WVitMrg58QzVpROqo=w2400" 
               alt="Dashboard Analytics"

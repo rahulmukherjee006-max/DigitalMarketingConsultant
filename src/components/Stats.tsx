@@ -4,8 +4,14 @@ import { useState, useEffect } from 'react';
 export default function Stats() {
   const [roas, setRoas] = useState(2.5);
   const [retention, setRetention] = useState(85);
+  const [revenue, setRevenue] = useState(85420500); // ~₹8.5 Cr starting point
 
   useEffect(() => {
+    const revenueInterval = setInterval(() => {
+      // Add between ₹1500 and ₹5500 every 1.5s to simulate ongoing client sales
+      setRevenue(prev => prev + Math.floor(Math.random() * 4000) + 1500);
+    }, 1500);
+
     // Fluctuations for ROAS between 2.3 and 2.9
     const roasInterval = setInterval(() => {
       setRoas(prev => {
@@ -29,13 +35,14 @@ export default function Stats() {
     }, 4500);
 
     return () => {
+      clearInterval(revenueInterval);
       clearInterval(roasInterval);
       clearInterval(retentionInterval);
     };
   }, []);
 
   const stats = [
-    { label: 'Managed Ad Spend', value: '₹20L+' },
+    { label: 'Client Revenue Generated', value: `₹${revenue.toLocaleString('en-IN')}`, isDynamic: true },
     { label: 'Clients Served', value: '25+' },
     { label: 'Avg ROAS Growth', value: `${roas.toFixed(1)}x`, isDynamic: true },
     { label: 'Retention Rate', value: `${retention}%`, isDynamic: true },
@@ -56,7 +63,7 @@ export default function Stats() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
             >
-              <div className={`text-4xl md:text-6xl font-bold font-display text-brand-accent mb-2 ${stat.isDynamic ? 'transition-all duration-500' : ''}`}>
+              <div className={`font-bold font-display text-brand-accent mb-2 whitespace-nowrap ${stat.value.toString().length > 8 ? 'text-2xl sm:text-3xl lg:text-4xl xl:text-5xl' : 'text-4xl md:text-6xl'} ${stat.isDynamic ? 'transition-all duration-500' : ''}`}>
                 {stat.value}
               </div>
               <div className="text-text-muted text-sm uppercase tracking-widest font-semibold">

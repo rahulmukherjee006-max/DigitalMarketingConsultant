@@ -4,15 +4,21 @@
  */
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Suspense, lazy } from 'react';
 import { motion, useScroll, useSpring } from 'motion/react';
-import Home from './pages/Home';
-import PlanBuilder from './pages/PlanBuilder';
-import ServicePage from './pages/ServicePage';
-import AdSpendCalculator from './pages/AdSpendCalculator';
-import CaseStudiesPage from './pages/CaseStudiesPage';
 import ScrollToTop from './components/ScrollToTop';
 import BackToTopButton from './components/BackToTopButton';
+import ExitIntentPopup from './components/ExitIntentPopup';
+import BookingModal from './components/BookingModal';
 import { ThemeProvider } from './components/ThemeProvider';
+import CursorGlow from './components/CursorGlow';
+import SkeletonLoader from './components/SkeletonLoader';
+
+const Home = lazy(() => import('./pages/Home'));
+const PlanBuilder = lazy(() => import('./pages/PlanBuilder'));
+const ServicePage = lazy(() => import('./pages/ServicePage'));
+const AdSpendCalculator = lazy(() => import('./pages/AdSpendCalculator'));
+const CaseStudiesPage = lazy(() => import('./pages/CaseStudiesPage'));
 
 function ProgressBar() {
   const { scrollYProgress } = useScroll();
@@ -34,16 +40,21 @@ export default function App() {
   return (
     <ThemeProvider>
       <BrowserRouter>
+        <CursorGlow />
         <ScrollToTop />
         <ProgressBar />
         <BackToTopButton />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/build-plan" element={<PlanBuilder />} />
-          <Route path="/services/:slug" element={<ServicePage />} />
-          <Route path="/ad-spend-calculator" element={<AdSpendCalculator />} />
-          <Route path="/case-studies" element={<CaseStudiesPage />} />
-        </Routes>
+        <ExitIntentPopup />
+        <BookingModal />
+        <Suspense fallback={<SkeletonLoader />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/build-plan" element={<PlanBuilder />} />
+            <Route path="/services/:slug" element={<ServicePage />} />
+            <Route path="/ad-spend-calculator" element={<AdSpendCalculator />} />
+            <Route path="/case-studies" element={<CaseStudiesPage />} />
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </ThemeProvider>
   );

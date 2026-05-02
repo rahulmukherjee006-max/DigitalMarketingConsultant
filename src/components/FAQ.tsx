@@ -67,7 +67,7 @@ export default function FAQ() {
           ))}
         </div>
 
-        <div className="mt-16 text-center bg-bg-secondary rounded-2xl p-8 border border-border-subtle">
+        <div className="mt-16 text-center glass-card p-8">
           <h3 className="text-2xl font-bold text-text-main mb-4">Still have questions?</h3>
           <p className="text-text-muted mb-8">Get a free consultation and we'll guide you step-by-step.</p>
           <a
@@ -91,7 +91,7 @@ const FAQItem: React.FC<{ faq: typeof faqs[0], index: number }> = ({ faq, index 
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.05 }}
-      className="bg-bg-secondary border border-border-subtle rounded-2xl overflow-hidden"
+      className="glass-card shadow-sm"
     >
       <button
         onClick={() => setIsOpen(!isOpen)}
