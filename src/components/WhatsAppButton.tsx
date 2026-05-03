@@ -1,13 +1,37 @@
 import { SiWhatsapp } from 'react-icons/si';
 import { motion } from 'motion/react';
-import { Calendar } from 'lucide-react';
+import { Calendar, ShoppingCart } from 'lucide-react';
 import { useBookingStore } from '../store/useBookingStore';
+import { useCartStore } from '../store/useCartStore';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function WhatsAppButton() {
   const { openBooking } = useBookingStore();
+  const { items } = useCartStore();
+  const location = useLocation();
+
+  // Hide cart button if we're exactly on the build-plan page
+  const showCartButton = items.length > 0 && location.pathname !== '/build-plan';
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 items-end">
+    <div className="fixed bottom-6 right-4 sm:right-6 z-50 flex flex-col gap-3 items-end">
+      {/* Floating Plan/Cart Option */}
+      {showCartButton && (
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+        >
+          <Link 
+            to="/build-plan" 
+            className="flex items-center gap-2 bg-bg-secondary border-2 border-brand-accent text-text-main px-4 sm:px-5 py-2.5 sm:py-3 rounded-full shadow-[0_0_20px_rgba(204,255,0,0.3)] hover:scale-105 transition-transform"
+          >
+            <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 text-brand-accent" />
+            <span className="font-bold text-sm sm:text-base whitespace-nowrap">{items.length} item{items.length > 1 ? 's' : ''} in Plan</span>
+          </Link>
+        </motion.div>
+      )}
+
       {/* Book a Call Option */}
       <motion.button
         onClick={openBooking}
@@ -19,9 +43,10 @@ export default function WhatsAppButton() {
         className="flex items-center gap-2 bg-text-main text-bg-primary px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all"
         aria-label="Book a call"
       >
-        <Calendar className="w-5 h-5" />
-        <span className="font-bold pr-1">Book a call</span>
+        <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />
+        <span className="font-bold text-sm sm:text-base pr-1 whitespace-nowrap">Book a call</span>
       </motion.button>
+
 
       {/* WhatsApp Option */}
       <motion.a

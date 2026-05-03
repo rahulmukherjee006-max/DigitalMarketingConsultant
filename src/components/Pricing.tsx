@@ -106,7 +106,7 @@ const addons = [
 ];
 
 export default function Pricing() {
-  const { addItem, removeItem, isInCart } = useCartStore();
+  const { addItem, removeItem, isInCart, isYearly, toggleYearly } = useCartStore();
 
   return (
     <section id="pricing" className="py-24 px-6 border-t border-border-subtle relative bg-bg-primary">
@@ -118,14 +118,26 @@ export default function Pricing() {
           <h2 className="text-4xl md:text-5xl lg:text-5xl font-bold mb-6 text-text-main max-w-4xl tracking-tight leading-tight">
             Digital Marketing <span className="text-brand-accent">Packages</span>
           </h2>
-          <p className="text-text-muted text-lg max-w-2xl">
+          <p className="text-text-muted text-lg max-w-2xl mb-8">
             Choose the right plan to scale your business. Transparent pricing, no hidden fees.
           </p>
+
+          <div className="flex items-center justify-center gap-4 bg-bg-secondary p-1 rounded-full border border-border-subtle relative">
+             <button onClick={() => toggleYearly(false)} className={`px-6 py-2 rounded-full font-bold text-sm transition-all z-10 ${!isYearly ? 'bg-text-main text-bg-primary' : 'text-text-muted hover:text-text-main'}`}>
+               Monthly
+             </button>
+             <button onClick={() => toggleYearly(true)} className={`px-6 py-2 rounded-full font-bold text-sm transition-all z-10 flex items-center gap-2 ${isYearly ? 'bg-text-main text-bg-primary' : 'text-text-muted hover:text-text-main'}`}>
+               Yearly <span className="bg-brand-accent text-brand-dark px-2 py-0.5 rounded-full text-xs shrink-0">Save 30%</span>
+             </button>
+          </div>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
           {packages.map((pkg, index) => {
             const inCart = isInCart(pkg.id);
+            const basePrice = parseInt(pkg.price.replace(/[^\d]/g, ''));
+            const calculatedPrice = isYearly ? basePrice * 12 * 0.7 : basePrice;
+
             return (
             <motion.div
               key={pkg.name}
@@ -148,9 +160,12 @@ export default function Pricing() {
                 <div className="text-brand-accent text-sm font-bold uppercase tracking-wider mb-2">{pkg.badge}</div>
                 <h3 className="text-2xl font-bold text-text-main mb-4">{pkg.name}</h3>
                 <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-bold text-text-main">{pkg.price}</span>
-                  <span className="text-text-muted">{pkg.frequency}</span>
+                  <span className="text-4xl font-bold text-text-main">₹{calculatedPrice.toLocaleString()}</span>
+                  <span className="text-text-muted">{isYearly ? '/ year' : pkg.frequency}</span>
                 </div>
+                {isYearly && (
+                   <span className="text-xs text-text-muted opacity-80 line-through">₹{(basePrice * 12).toLocaleString()} / year</span>
+                )}
               </div>
 
               <div className="bg-text-main/5 rounded-xl p-4 mb-8">

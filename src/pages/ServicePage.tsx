@@ -9,7 +9,7 @@ import { useTheme } from '../components/ThemeProvider';
 export default function ServicePage() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
-  const { addItem, removeItem, isInCart, items } = useCartStore();
+  const { addItem, removeItem, isInCart, items, isYearly, toggleYearly } = useCartStore();
   const { theme, toggleTheme } = useTheme();
   
   if (!slug || !servicePagesData[slug as keyof typeof servicePagesData]) {
@@ -37,16 +37,35 @@ export default function ServicePage() {
   };
 
   return (
-    <div className="min-h-screen bg-bg-primary text-text-main selection:bg-brand-accent selection:text-brand-dark">
+    <div className="min-h-screen bg-bg-primary text-text-main selection:bg-brand-accent selection:text-brand-dark relative">
+      {/* Background Masked Image for Meta Ads */}
+      {slug === 'facebook-instagram-ads' && (
+         <motion.div 
+           initial={{ y: 0 }}
+           animate={{ y: [-15, 15, -15] }}
+           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+           className={`absolute inset-x-0 -top-10 h-[60vh] md:h-[80vh] z-0 ${theme === 'dark' ? 'opacity-70 md:opacity-50' : 'opacity-100 md:opacity-[0.85]'} bg-center bg-cover bg-no-repeat pointer-events-none`}
+           style={{ 
+             backgroundImage: `url(${theme === 'dark' ? 'https://lh3.googleusercontent.com/pw/AP1GczOFpYkOTy5hr1VeSnRQ5N2metkRvBqS1hLKa26FrrCvPVgrzOl5sY3m4ZwzcsXbsUeUOHkQBzR9XjFFnHta_uMZtSXisQoNfYE0akci4QCiQHNJKl37Q04kss2zLTwuUPrCuwfXviVu1WlZxk0RstU4bg=w1672-h941-s-no-gm?authuser=0' : 'https://lh3.googleusercontent.com/pw/AP1GczMoaOqPHHqbqGRSU3_ZIQHKUtue6aQqghPy0bLoizpCawSkX9w2mkY7p-r-0w9UWfBjJpfwQ2kHPwZP2pDj-ayS1CvLLF9OdZaFD7fy_gjwKZ9uyTKcQV1cKr3dIK8LeNiEUrhWne3oN0HL97kivcE96Q=w1672-h941-s-no-gm?authuser=0'})`,
+             maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)',
+             WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)'
+           }}
+         />
+      )}
+
       {/* Header */}
       <header className="border-b border-border-subtle bg-bg-primary/80 backdrop-blur-xl sticky top-0 z-40">
-        <div className="max-w-4xl mx-auto px-6 h-20 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 text-text-muted hover:text-text-main transition-colors group">
+        <div className="max-w-4xl mx-auto px-6 h-20 flex items-center justify-between relative">
+          <Link to="/" className="flex items-center gap-2 text-text-muted hover:text-text-main transition-colors group relative z-10">
             <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
             <span className="font-bold hidden sm:inline">Back</span>
           </Link>
 
-          <div className="flex items-center gap-4">
+          <div className="absolute left-1/2 -translate-x-1/2 font-bold text-lg text-text-main whitespace-nowrap hidden sm:block z-10 w-full text-center px-32 truncate pointer-events-none">
+            {cartItem?.title || data.title}
+          </div>
+
+          <div className="flex items-center gap-4 relative z-10">
             <button
               onClick={toggleTheme}
               className="p-2 text-text-muted hover:text-text-main hover:bg-text-main/5 rounded-full transition-colors"
@@ -71,7 +90,7 @@ export default function ServicePage() {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-6 py-16 sm:py-24 space-y-16">
+      <main className="max-w-4xl mx-auto px-6 py-16 sm:py-24 space-y-16 relative z-10">
         
         {/* Title Section */}
         <section className="text-center space-y-6">
@@ -186,10 +205,43 @@ export default function ServicePage() {
               transition={{ delay: 0.5 }}
               className="bg-bg-secondary rounded-[32px] border border-border-subtle sticky top-28 p-6"
             >
-              <h3 className="text-xl font-bold text-text-main mb-2">Pricing</h3>
-              <p className="text-3xl font-display font-bold text-brand-accent mb-6">
-                {data.pricingDetailed.price}
-              </p>
+              <div className="flex justify-between items-start mb-6">
+                 <h3 className="text-xl font-bold text-text-main">Pricing</h3>
+                 
+                 {data.pricingDetailed.price.includes('/ month') && (
+                   <div className="flex bg-bg-primary rounded-xl border border-border-subtle p-0.5 shadow-sm">
+                      <button onClick={() => toggleYearly(false)} className={`py-1.5 px-3 rounded-lg font-bold text-[10px] transition-colors ${!isYearly ? 'bg-text-main text-bg-primary' : 'text-text-muted hover:text-text-main'}`}>
+                        Mo.
+                      </button>
+                      <button onClick={() => toggleYearly(true)} className={`py-1.5 px-3 rounded-lg font-bold text-[10px] transition-colors flex items-center gap-1 ${isYearly ? 'bg-text-main text-bg-primary' : 'text-text-muted hover:text-text-main'}`}>
+                        Yr. <span className="bg-brand-accent text-brand-dark px-1 py-0.5 rounded-sm shrink-0 leading-none">30% Off</span>
+                      </button>
+                   </div>
+                 )}
+              </div>
+              
+              <div className="mb-6 flex flex-col items-start gap-1">
+                 {(() => {
+                   const isMonthly = data.pricingDetailed.price.includes('/ month');
+                   let displayPrice = data.pricingDetailed.price;
+                   let displayStrikeThrough = null;
+                   if (isMonthly && isYearly) {
+                      const basePrice = parseInt(data.pricingDetailed.price.replace(/[^\d]/g, ''));
+                      displayPrice = `₹${(basePrice * 12 * 0.7).toLocaleString()} / year`;
+                      displayStrikeThrough = `₹${(basePrice * 12).toLocaleString()} / year`;
+                   }
+                   return (
+                     <>
+                        <p className="text-3xl font-display font-bold text-brand-accent">
+                          {displayPrice}
+                        </p>
+                        {displayStrikeThrough && (
+                           <span className="text-sm text-text-muted opacity-80 line-through pl-1">{displayStrikeThrough}</span>
+                        )}
+                     </>
+                   );
+                 })()}
+              </div>
               
               {data.pricingDetailed.breakdown.length > 0 && (
                 <div className="space-y-3 mb-6">

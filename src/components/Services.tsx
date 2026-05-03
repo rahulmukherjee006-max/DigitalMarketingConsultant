@@ -105,7 +105,7 @@ const services = [
 ];
 
 export default function Services() {
-  const { addItem, removeItem, isInCart } = useCartStore();
+  const { addItem, removeItem, isInCart, isYearly, toggleYearly } = useCartStore();
 
   return (
     <section id="services" className="py-24 px-6 border-t border-border-subtle relative bg-bg-primary">
@@ -117,14 +117,36 @@ export default function Services() {
           <h2 className="text-4xl md:text-5xl lg:text-5xl font-bold mb-6 text-text-main max-w-4xl tracking-tight leading-tight">
             Services That Drive <span className="text-brand-accent">Real Growth</span>
           </h2>
-          <p className="text-text-muted text-lg max-w-2xl">
+          <p className="text-text-muted text-lg max-w-2xl mb-8">
             Result-driven digital marketing solutions to help your business get more traffic, leads, and customers.
           </p>
+          
+          <div className="flex items-center justify-center gap-4 bg-bg-secondary p-1 rounded-full border border-border-subtle relative">
+             <button onClick={() => toggleYearly(false)} className={`px-6 py-2 rounded-full font-bold text-sm transition-all z-10 ${!isYearly ? 'bg-text-main text-bg-primary' : 'text-text-muted hover:text-text-main'}`}>
+               Monthly
+             </button>
+             <button onClick={() => toggleYearly(true)} className={`px-6 py-2 rounded-full font-bold text-sm transition-all z-10 flex items-center gap-2 ${isYearly ? 'bg-text-main text-bg-primary' : 'text-text-muted hover:text-text-main'}`}>
+               Yearly <span className="bg-brand-accent text-brand-dark px-2 py-0.5 rounded-full text-xs shrink-0">Save 30%</span>
+             </button>
+          </div>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
           {services.map((service, index) => {
             const inCart = isInCart(service.id);
+            const isServiceMonthly = service.price.includes('/ month');
+            let displayPrice = service.price;
+            let displayStrikeThrough = null;
+            
+            if (isServiceMonthly) {
+               const basePrice = parseInt(service.price.replace(/[^\d]/g, ''));
+               if (isYearly) {
+                 const newPrice = basePrice * 12 * 0.7;
+                 displayPrice = `₹${newPrice.toLocaleString()} / year`;
+                 displayStrikeThrough = `₹${(basePrice * 12).toLocaleString()} / year`;
+               }
+            }
+
             return (
             <motion.div
               key={service.title}
@@ -145,10 +167,13 @@ export default function Services() {
                 </div>
               </div>
               <h3 className="text-[22px] font-bold mb-3 text-text-main leading-snug pr-4">{service.title}</h3>
-              <div className="mb-4">
+              <div className="mb-4 flex flex-col items-start gap-1">
                  <span className="text-brand-accent font-mono text-sm font-bold bg-brand-accent/10 px-3 py-1 rounded-md inline-block">
-                   {service.price}
+                   {displayPrice}
                  </span>
+                 {displayStrikeThrough && (
+                    <span className="text-xs text-text-muted opacity-80 line-through pl-1">{displayStrikeThrough}</span>
+                 )}
               </div>
               <p className="text-text-muted text-[15px] leading-relaxed mb-8 flex-grow pr-2">
                 {service.description}

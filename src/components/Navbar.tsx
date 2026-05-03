@@ -61,7 +61,7 @@ export default function Navbar() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 bg-bg-secondary border border-border-subtle rounded-2xl shadow-xl overflow-hidden py-2"
+                  className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 bg-bg-primary/95 backdrop-blur-2xl border border-border-subtle rounded-2xl shadow-xl overflow-hidden py-2"
                 >
                   {servicesList.map((service) => (
                     <a
@@ -96,6 +96,12 @@ export default function Navbar() {
 
         {/* Desktop CTA & Theme Toggle */}
         <div className="hidden md:flex items-center gap-2 lg:gap-4 shrink-0 ml-2 lg:ml-4">
+          <Link
+            to="/auth"
+            className="text-sm font-bold text-text-muted hover:text-text-main transition-colors px-2 whitespace-nowrap"
+          >
+            Login
+          </Link>
           <button 
             onClick={toggleTheme}
             className="p-2 rounded-full bg-text-main/5 hover:bg-text-main/10 text-text-muted hover:text-text-main transition-colors"
@@ -181,6 +187,15 @@ export default function Navbar() {
                   </a>
                 </li>
               ))}
+              <li>
+                <Link
+                  to="/auth"
+                  className="text-lg font-bold text-text-main block py-2"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Login / Sign Up
+                </Link>
+              </li>
               <li className="mt-4">
                 <a
                   href="/build-plan"

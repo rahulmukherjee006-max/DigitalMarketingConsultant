@@ -178,7 +178,7 @@ const addonGroups = [
 ];
 
 export default function PlanBuilder() {
-  const { items, addItem, removeItem, isInCart, isWomenEntrepreneur, toggleWomenEntrepreneur } = useCartStore();
+  const { items, addItem, removeItem, isInCart, isWomenEntrepreneur, toggleWomenEntrepreneur, isYearly, toggleYearly } = useCartStore();
   const [activeTab, setActiveTab] = useState<'plan' | 'service' | 'addon'>('plan');
   const [errorMsg, setErrorMsg] = useState('');
   const [showWizard, setShowWizard] = useState(false);
@@ -194,12 +194,19 @@ export default function PlanBuilder() {
   const availableItems = useMemo(() => builderItems.filter(i => i.type === activeTab), [activeTab]);
 
   const calculateTotal = (min: boolean, isMonthly: boolean) => {
-    const total = items.filter(i => i.isMonthly === isMonthly).reduce((acc, curr) => acc + (min ? curr.minPrice : curr.maxPrice), 0);
+    let total = items.filter(i => i.isMonthly === isMonthly).reduce((acc, curr) => acc + (min ? curr.minPrice : curr.maxPrice), 0);
+    if (isMonthly && isYearly) {
+       total = total * 12 * 0.7; // Yearly billing saves 30%
+    }
     return isWomenEntrepreneur ? total * 0.7 : total;
   };
   
   const getOriginalTotal = (min: boolean, isMonthly: boolean) => {
-    return items.filter(i => i.isMonthly === isMonthly).reduce((acc, curr) => acc + (min ? curr.minPrice : curr.maxPrice), 0);
+    let total = items.filter(i => i.isMonthly === isMonthly).reduce((acc, curr) => acc + (min ? curr.minPrice : curr.maxPrice), 0);
+    if (isMonthly && isYearly) {
+       total = total * 12; // Base yearly price without 30% discount
+    }
+    return total;
   };
 
   const monthlyTotalMin = calculateTotal(true, true);
@@ -280,7 +287,7 @@ export default function PlanBuilder() {
       message += `*Add-ons:*%0A${addons.map(a => `- ${a.title}`).join('%0A')}%0A%0A`;
     }
 
-    message += `*Estimated Monthly:* ${formatPrice(monthlyTotalMin, monthlyTotalMax)}%0A`;
+    message += `*Estimated ${isYearly ? 'Yearly' : 'Monthly'} (Subscription):* ${formatPrice(monthlyTotalMin, monthlyTotalMax)}%0A`;
     message += `*Estimated One-Time:* ${formatPrice(oneTimeTotalMin, oneTimeTotalMax)}%0A%0A`;
     message += `Please let me know the next steps!`;
 
@@ -374,11 +381,23 @@ export default function PlanBuilder() {
             <div className="space-y-4">
               {activeTab === 'addon' ? (
                 addonGroups.map((group, index) => (
-                   <AddonGroupBuilder key={group.title} group={group} index={index} onAdd={handleAddItem} />
+                   <AddonGroupBuilder key={group.title} group={group} index={index} onAdd={handleAddItem} isYearly={isYearly} />
                 ))
               ) : (
                 availableItems.map((item, index) => {
                   const inCart = isInCart(item.id);
+                  let displayMinPrice = item.minPrice;
+                  let displayMaxPrice = item.maxPrice;
+                  let displayStrikeThroughMin = null;
+                  let displayStrikeThroughMax = null;
+
+                  if (item.isMonthly && isYearly) {
+                     displayMinPrice = item.minPrice * 12 * 0.7;
+                     displayMaxPrice = item.maxPrice * 12 * 0.7;
+                     displayStrikeThroughMin = item.minPrice * 12;
+                     displayStrikeThroughMax = item.maxPrice * 12;
+                  }
+
                   return (
                     <motion.div
                       key={item.id}
@@ -395,9 +414,16 @@ export default function PlanBuilder() {
                       <div className="flex flex-col sm:flex-row gap-4 sm:items-center justify-between">
                         <div>
                           <h3 className="text-xl font-bold text-text-main mb-1">{item.title}</h3>
-                          <p className="text-text-muted text-sm">
-                            {formatPrice(item.minPrice, item.maxPrice)} {item.isMonthly ? '/ month' : '(one-time)'}
-                          </p>
+                          <div className="flex flex-col gap-1 mt-1">
+                            <p className="text-text-muted text-sm font-bold">
+                              {formatPrice(displayMinPrice, displayMaxPrice)} {item.isMonthly ? (isYearly ? '/ year' : '/ month') : '(one-time)'}
+                            </p>
+                            {displayStrikeThroughMin && (
+                              <p className="text-xs text-text-muted opacity-80 line-through">
+                                {formatPrice(displayStrikeThroughMin, displayStrikeThroughMax)} / year
+                              </p>
+                            )}
+                          </div>
                         </div>
                         <button 
                           className={`shrink-0 w-12 h-12 rounded-full flex items-center justify-center transition-colors ${
@@ -436,7 +462,15 @@ export default function PlanBuilder() {
                         <div>
                           <p className="text-text-main font-medium text-sm leading-tight mb-1">{item.title}</p>
                           <p className="text-text-muted text-xs">
-                             {item.minPrice === item.maxPrice ? `₹${item.minPrice.toLocaleString()}` : `₹${item.minPrice.toLocaleString()} – ₹${item.maxPrice.toLocaleString()}`}
+                             {item.isMonthly && isYearly ? (
+                               item.minPrice === item.maxPrice 
+                                 ? `₹${(item.minPrice * 12 * 0.7).toLocaleString()}` 
+                                 : `₹${(item.minPrice * 12 * 0.7).toLocaleString()} – ₹${(item.maxPrice * 12 * 0.7).toLocaleString()}`
+                             ) : (
+                               item.minPrice === item.maxPrice 
+                                 ? `₹${item.minPrice.toLocaleString()}` 
+                                 : `₹${item.minPrice.toLocaleString()} – ₹${item.maxPrice.toLocaleString()}`
+                             )}
                           </p>
                         </div>
                         <button 
@@ -450,6 +484,16 @@ export default function PlanBuilder() {
                   </div>
 
                   <div className="space-y-4 pt-6 mt-6 border-t border-border-subtle">
+                    
+                    <div className="flex bg-bg-primary rounded-xl p-1 border border-border-subtle mb-4">
+                        <button onClick={() => toggleYearly(false)} className={`flex-1 py-2 rounded-lg font-bold text-xs transition-colors ${!isYearly ? 'bg-text-main text-bg-primary' : 'text-text-muted hover:text-text-main'}`}>
+                          Monthly
+                        </button>
+                        <button onClick={() => toggleYearly(true)} className={`flex-1 py-2 rounded-lg font-bold text-xs transition-colors flex items-center justify-center gap-1.5 ${isYearly ? 'bg-text-main text-bg-primary' : 'text-text-muted hover:text-text-main'}`}>
+                          Yearly <span className="text-[10px] bg-brand-accent text-brand-dark px-1.5 py-0.5 rounded-full">Save 30%</span>
+                        </button>
+                    </div>
+
                     <label className="flex items-start gap-3 p-4 rounded-xl cursor-pointer bg-brand-accent/5 border border-brand-accent/20 hover:bg-brand-accent/10 transition-colors">
                       <div className="relative flex items-center justify-center mt-0.5">
                         <input 
@@ -467,9 +511,9 @@ export default function PlanBuilder() {
                     </label>
 
                     <div className="flex justify-between items-baseline pt-4">
-                      <span className="text-text-muted shrink-0 mr-4">Monthly</span>
+                      <span className="text-text-muted shrink-0 mr-4">{isYearly ? 'Yearly Setup' : 'Monthly'}</span>
                       <div className="flex flex-col items-end">
-                        {isWomenEntrepreneur && orgMonthlyTotalMax > 0 && (
+                        {(isYearly || isWomenEntrepreneur) && orgMonthlyTotalMax > 0 && (
                           <span className="text-xs text-text-muted line-through mb-0.5">
                             {orgMonthlyTotalMin === orgMonthlyTotalMax 
                                ? `₹${orgMonthlyTotalMin.toLocaleString()}`
@@ -524,7 +568,7 @@ export default function PlanBuilder() {
   );
 }
 
-const AddonGroupBuilder: React.FC<{ group: { title: string; items: CartItem[] }, index: number, onAdd: (item: CartItem) => void }> = ({ group, index, onAdd }) => {
+const AddonGroupBuilder: React.FC<{ group: { title: string; items: CartItem[] }, index: number, onAdd: (item: CartItem) => void, isYearly?: boolean }> = ({ group, index, onAdd, isYearly }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { removeItem, isInCart } = useCartStore();
 
@@ -559,6 +603,18 @@ const AddonGroupBuilder: React.FC<{ group: { title: string; items: CartItem[] },
             <div className="space-y-3 pt-4 border-t border-border-subtle">
               {group.items.map(item => {
                 const inCart = isInCart(item.id);
+                let displayMinPrice = item.minPrice;
+                let displayMaxPrice = item.maxPrice;
+                let displayStrikeThroughMin = null;
+                let displayStrikeThroughMax = null;
+
+                if (item.isMonthly && isYearly) {
+                   displayMinPrice = item.minPrice * 12 * 0.7;
+                   displayMaxPrice = item.maxPrice * 12 * 0.7;
+                   displayStrikeThroughMin = item.minPrice * 12;
+                   displayStrikeThroughMax = item.maxPrice * 12;
+                }
+
                 return (
                   <div 
                     key={item.id}
@@ -571,9 +627,16 @@ const AddonGroupBuilder: React.FC<{ group: { title: string; items: CartItem[] },
                   >
                     <div>
                       <p className="font-bold text-text-main mb-1.5 text-[15px]">{item.title}</p>
-                      <span className="text-brand-accent font-mono text-xs px-2 py-1 bg-brand-accent/10 rounded-md">
-                        {formatPrice(item.minPrice, item.maxPrice)} {item.isMonthly ? '/ month' : '(one-time)'}
-                      </span>
+                      <div className="flex flex-col gap-1">
+                        <span className="text-brand-accent font-mono text-xs px-2 py-1 bg-brand-accent/10 rounded-md inline-block w-max">
+                          {formatPrice(displayMinPrice, displayMaxPrice)} {item.isMonthly ? (isYearly ? '/ year' : '/ month') : '(one-time)'}
+                        </span>
+                        {displayStrikeThroughMin && (
+                           <span className="text-xs text-text-muted opacity-80 line-through pl-1">
+                             {formatPrice(displayStrikeThroughMin, displayStrikeThroughMax)} / year
+                           </span>
+                        )}
+                      </div>
                     </div>
                     <button 
                       className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-colors ${

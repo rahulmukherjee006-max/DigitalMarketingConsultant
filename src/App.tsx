@@ -19,6 +19,7 @@ const PlanBuilder = lazy(() => import('./pages/PlanBuilder'));
 const ServicePage = lazy(() => import('./pages/ServicePage'));
 const AdSpendCalculator = lazy(() => import('./pages/AdSpendCalculator'));
 const CaseStudiesPage = lazy(() => import('./pages/CaseStudiesPage'));
+const AuthPage = lazy(() => import('./pages/AuthPage'));
 
 function ProgressBar() {
   const { scrollYProgress } = useScroll();
@@ -49,6 +50,7 @@ export default function App() {
         <Suspense fallback={<SkeletonLoader />}>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/auth" element={<AuthPage />} />
             <Route path="/build-plan" element={<PlanBuilder />} />
             <Route path="/services/:slug" element={<ServicePage />} />
             <Route path="/ad-spend-calculator" element={<AdSpendCalculator />} />
