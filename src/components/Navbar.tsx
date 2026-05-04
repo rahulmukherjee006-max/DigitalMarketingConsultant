@@ -1,13 +1,15 @@
 import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X, ArrowUpRight, ChevronDown, Sun, Moon, Calculator } from 'lucide-react';
+import { Menu, X, ArrowUpRight, ChevronDown, Sun, Moon, Calculator, Search } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useTheme } from './ThemeProvider';
+import { useUIStore } from '../store/useUIStore';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const { setSearchOpen } = useUIStore();
 
   const navLinks = [
     { name: 'Ad Spend Calculator', href: '/ad-spend-calculator' },
@@ -102,13 +104,25 @@ export default function Navbar() {
           >
             Login
           </Link>
-          <button 
-            onClick={toggleTheme}
-            className="p-2 rounded-full bg-text-main/5 hover:bg-text-main/10 text-text-muted hover:text-text-main transition-colors"
-            aria-label="Toggle theme"
-          >
-            {theme === 'dark' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="p-2 rounded-full bg-text-main/5 hover:bg-text-main/10 text-text-muted hover:text-text-main transition-colors flex items-center justify-center relative group"
+              aria-label="Search"
+            >
+              <Search className="w-4 h-4" />
+              <div className="hidden group-hover:flex absolute -bottom-8 bg-bg-secondary text-text-muted text-[10px] px-2 py-1 rounded-md border border-border-subtle whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
+                <span className="font-mono">⌘K</span>
+              </div>
+            </button>
+            <button 
+              onClick={toggleTheme}
+              className="p-2 rounded-full bg-text-main/5 hover:bg-text-main/10 text-text-muted hover:text-text-main transition-colors"
+              aria-label="Toggle theme"
+            >
+              {theme === 'dark' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
+            </button>
+          </div>
           <a
             href="/build-plan"
             className="group flex flex-nowrap items-center gap-1 lg:gap-2 bg-brand-accent text-brand-dark px-3 lg:px-5 py-2 rounded-full text-xs lg:text-sm font-bold hover:opacity-90 transition-all whitespace-nowrap"
@@ -128,6 +142,13 @@ export default function Navbar() {
             <Calculator className="w-3.5 h-3.5" />
             Build Plan
           </Link>
+          <button 
+            onClick={() => setSearchOpen(true)}
+            className="p-1.5 sm:p-2 rounded-full bg-text-main/5 text-text-muted"
+            aria-label="Search"
+          >
+            <Search className="w-4 h-4 sm:w-5 sm:h-5" />
+          </button>
           <button 
             onClick={toggleTheme}
             className="p-1.5 sm:p-2 rounded-full bg-text-main/5 text-text-muted"

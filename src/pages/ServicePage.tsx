@@ -1,16 +1,18 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowLeft, Check, Plus, Minus, ShoppingCart, Info, TrendingUp, HelpCircle, Moon, Sun } from 'lucide-react';
+import { ArrowLeft, Check, Plus, Minus, ShoppingCart, Info, TrendingUp, HelpCircle, Moon, Sun, Search } from 'lucide-react';
 import { servicePagesData } from '../data/servicePagesData';
 import { builderItems } from '../data/builderData';
 import { useCartStore } from '../store/useCartStore';
 import { useTheme } from '../components/ThemeProvider';
+import { useUIStore } from '../store/useUIStore';
 
 export default function ServicePage() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const { addItem, removeItem, isInCart, items, isYearly, toggleYearly } = useCartStore();
   const { theme, toggleTheme } = useTheme();
+  const { setSearchOpen } = useUIStore();
   
   if (!slug || !servicePagesData[slug as keyof typeof servicePagesData]) {
     return (
@@ -66,6 +68,16 @@ export default function ServicePage() {
           </div>
 
           <div className="flex items-center gap-4 relative z-10">
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="p-2 text-text-muted hover:text-text-main hover:bg-text-main/5 rounded-full transition-colors flex items-center justify-center relative group"
+              aria-label="Search"
+            >
+               <Search className="w-5 h-5" />
+               <div className="hidden group-hover:flex absolute -bottom-8 bg-bg-secondary text-text-muted text-[10px] px-2 py-1 rounded-md border border-border-subtle whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
+                 <span className="font-mono">⌘K</span>
+               </div>
+            </button>
             <button
               onClick={toggleTheme}
               className="p-2 text-text-muted hover:text-text-main hover:bg-text-main/5 rounded-full transition-colors"

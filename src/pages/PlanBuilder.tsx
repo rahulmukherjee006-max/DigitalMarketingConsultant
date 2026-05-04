@@ -1,10 +1,11 @@
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowLeft, Check, Plus, Minus, ShoppingCart, ChevronDown, AlertCircle, Sparkles, X, Moon, Sun } from 'lucide-react';
+import { ArrowLeft, Check, Plus, Minus, ShoppingCart, ChevronDown, AlertCircle, Sparkles, X, Moon, Sun, Search } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import React, { useState, useMemo, useEffect } from 'react';
 import { useCartStore, CartItem } from '../store/useCartStore';
 import { builderItems } from '../data/builderData';
 import { useTheme } from '../components/ThemeProvider';
+import { useUIStore } from '../store/useUIStore';
 
 interface WizardProps {
   onComplete: (recommendedIds: string[]) => void;
@@ -183,6 +184,7 @@ export default function PlanBuilder() {
   const [errorMsg, setErrorMsg] = useState('');
   const [showWizard, setShowWizard] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const { setSearchOpen } = useUIStore();
 
   useEffect(() => {
     if (errorMsg) {
@@ -327,6 +329,16 @@ export default function PlanBuilder() {
             Back to Home
           </Link>
           <div className="flex items-center gap-2">
+             <button
+               onClick={() => setSearchOpen(true)}
+               className="p-2 sm:mr-2 text-text-muted hover:text-text-main transition-colors flex items-center justify-center relative group"
+               aria-label="Search"
+             >
+                <Search className="w-5 h-5" />
+                <div className="hidden group-hover:flex absolute -bottom-8 bg-bg-secondary text-text-muted text-[10px] px-2 py-1 rounded-md border border-border-subtle whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="font-mono">⌘K</span>
+                </div>
+             </button>
              <button
                onClick={toggleTheme}
                className="p-2 sm:mr-2 text-text-muted hover:text-text-main transition-colors"

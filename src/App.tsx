@@ -10,6 +10,7 @@ import ScrollToTop from './components/ScrollToTop';
 import BackToTopButton from './components/BackToTopButton';
 import ExitIntentPopup from './components/ExitIntentPopup';
 import BookingModal from './components/BookingModal';
+import SearchModal from './components/SearchModal';
 import { ThemeProvider } from './components/ThemeProvider';
 import CursorGlow from './components/CursorGlow';
 import SkeletonLoader from './components/SkeletonLoader';
@@ -47,6 +48,7 @@ export default function App() {
         <BackToTopButton />
         <ExitIntentPopup />
         <BookingModal />
+        <SearchModal />
         <Suspense fallback={<SkeletonLoader />}>
           <Routes>
             <Route path="/" element={<Home />} />

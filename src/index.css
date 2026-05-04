@@ -21,8 +21,8 @@
   --border-color: rgba(255, 255, 255, 0.05);
   --glass-bg: rgba(36, 39, 45, 0.8);
   --glass-border: rgba(255, 255, 255, 0.05);
-  --brand-accent: #bff747;
-  --brand-dark: #0c1205;
+  --brand-accent: #4ade80; /* green-400 */
+  --brand-dark: #022c22; /* teal-950 */
 }
 
 @theme {
