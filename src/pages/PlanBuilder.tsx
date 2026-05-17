@@ -147,7 +147,7 @@ const AutoSuggestWizard: React.FC<WizardProps> = ({ onComplete, onClose }) => {
               <button 
                 disabled={!needsWeb}
                 onClick={handleComplete}
-                className="px-6 py-3 bg-brand-accent text-brand-dark rounded-xl font-bold shadow-lg hover:opacity-90 transition-opacity disabled:opacity-50"
+                className="btn-glass px-6 py-3 rounded-xl font-bold transition-opacity disabled:opacity-50"
               >
                 Show My Plan
               </button>
@@ -522,47 +522,62 @@ export default function PlanBuilder() {
                       </div>
                     </label>
 
-                    <div className="flex justify-between items-baseline pt-4">
-                      <span className="text-text-muted shrink-0 mr-4">{isYearly ? 'Yearly Setup' : 'Monthly'}</span>
-                      <div className="flex flex-col items-end">
-                        {(isYearly || isWomenEntrepreneur) && orgMonthlyTotalMax > 0 && (
-                          <span className="text-xs text-text-muted line-through mb-0.5">
-                            {orgMonthlyTotalMin === orgMonthlyTotalMax 
-                               ? `₹${orgMonthlyTotalMin.toLocaleString()}`
-                               : `₹${orgMonthlyTotalMin.toLocaleString()} – ₹${orgMonthlyTotalMax.toLocaleString()}`}
-                          </span>
-                        )}
-                        <span className="font-bold text-text-main text-lg text-right">
-                          {monthlyTotalMin === monthlyTotalMax 
-                             ? `₹${monthlyTotalMin.toLocaleString()}`
-                             : `₹${monthlyTotalMin.toLocaleString()} – ₹${monthlyTotalMax.toLocaleString()}`
-                          }
-                        </span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-baseline mt-2">
-                      <span className="text-text-muted shrink-0 mr-4">One-Time</span>
-                      <div className="flex flex-col items-end">
-                        {isWomenEntrepreneur && orgOneTimeTotalMax > 0 && (
-                          <span className="text-xs text-text-muted line-through mb-0.5">
-                            {orgOneTimeTotalMin === orgOneTimeTotalMax 
-                               ? `₹${orgOneTimeTotalMin.toLocaleString()}`
-                               : `₹${orgOneTimeTotalMin.toLocaleString()} – ₹${orgOneTimeTotalMax.toLocaleString()}`}
-                          </span>
-                        )}
-                        <span className="font-bold text-brand-accent text-lg text-right">
-                          {oneTimeTotalMin === oneTimeTotalMax 
-                             ? `₹${oneTimeTotalMin.toLocaleString()}`
-                             : `₹${oneTimeTotalMin.toLocaleString()} – ₹${oneTimeTotalMax.toLocaleString()}`
-                          }
-                        </span>
-                      </div>
+                    <div className="bg-bg-primary rounded-2xl p-5 border border-border-subtle space-y-5 mt-6 shadow-sm">
+                      <h3 className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Estimated Investment</h3>
+                      
+                      {monthlyTotalMax > 0 && (
+                        <div className={`flex justify-between items-end ${oneTimeTotalMax > 0 ? 'border-b border-border-subtle pb-5' : ''}`}>
+                          <div className="flex flex-col">
+                            <span className="text-text-main font-bold text-sm">{isYearly ? 'Yearly Subtotal' : 'Monthly Subtotal'}</span>
+                            <span className="text-xs text-text-muted">Recurring subscription</span>
+                          </div>
+                          <div className="flex flex-col items-end">
+                            {(isYearly || isWomenEntrepreneur) && orgMonthlyTotalMax > 0 && (
+                              <span className="text-[13px] font-mono font-medium text-text-muted line-through mb-0.5 opacity-70">
+                                {orgMonthlyTotalMin === orgMonthlyTotalMax 
+                                   ? `₹${orgMonthlyTotalMin.toLocaleString()}`
+                                   : `₹${orgMonthlyTotalMin.toLocaleString()} – ₹${orgMonthlyTotalMax.toLocaleString()}`}
+                              </span>
+                            )}
+                            <span className="font-mono font-bold text-text-main text-xl tracking-tight">
+                              {monthlyTotalMin === monthlyTotalMax 
+                                 ? `₹${monthlyTotalMin.toLocaleString()}`
+                                 : `₹${monthlyTotalMin.toLocaleString()} – ₹${monthlyTotalMax.toLocaleString()}`
+                              }
+                            </span>
+                          </div>
+                        </div>
+                      )}
+
+                      {oneTimeTotalMax > 0 && (
+                        <div className="flex justify-between items-end">
+                          <div className="flex flex-col">
+                            <span className="text-text-main font-bold text-sm">One-Time Subtotal</span>
+                            <span className="text-xs text-text-muted">Setup & standalone</span>
+                          </div>
+                          <div className="flex flex-col items-end">
+                            {isWomenEntrepreneur && orgOneTimeTotalMax > 0 && (
+                              <span className="text-[13px] font-mono font-medium text-text-muted line-through mb-0.5 opacity-70">
+                                {orgOneTimeTotalMin === orgOneTimeTotalMax 
+                                   ? `₹${orgOneTimeTotalMin.toLocaleString()}`
+                                   : `₹${orgOneTimeTotalMin.toLocaleString()} – ₹${orgOneTimeTotalMax.toLocaleString()}`}
+                              </span>
+                            )}
+                            <span className="font-mono font-bold text-brand-accent text-xl tracking-tight bg-brand-accent/10 px-2 py-0.5 rounded-lg">
+                              {oneTimeTotalMin === oneTimeTotalMax 
+                                 ? `₹${oneTimeTotalMin.toLocaleString()}`
+                                 : `₹${oneTimeTotalMin.toLocaleString()} – ₹${oneTimeTotalMax.toLocaleString()}`
+                              }
+                            </span>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
 
                   <button 
                     onClick={handleCheckout}
-                    className="w-full mt-8 bg-brand-accent text-brand-dark py-3.5 md:py-4 rounded-full font-bold text-base md:text-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+                    className="w-full mt-8 btn-glass py-3.5 md:py-4 rounded-full font-bold text-base md:text-lg flex items-center justify-center gap-2"
                   >
                     Discuss & Buy Now
                   </button>

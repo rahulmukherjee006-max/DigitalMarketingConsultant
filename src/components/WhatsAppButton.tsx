@@ -40,11 +40,10 @@ export default function WhatsAppButton() {
         transition={{ delay: 1, type: 'spring', stiffness: 200, damping: 20 }}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="flex items-center gap-2 bg-text-main text-bg-primary px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all"
+        className="relative flex items-center justify-center w-[52px] h-[52px] btn-glass rounded-full shadow-[0_4px_14px_0_rgba(255,255,255,0.39)] hover:shadow-[0_6px_20px_rgba(255,255,255,0.23)] transition-colors"
         aria-label="Book a call"
       >
-        <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />
-        <span className="font-bold text-sm sm:text-base pr-1 whitespace-nowrap">Book a call</span>
+        <Calendar className="w-6 h-6" />
       </motion.button>
 
 

@@ -85,7 +85,7 @@ export default function ExitIntentPopup() {
                 setIsVisible(false);
                 openBooking();
               }}
-              className="flex items-center justify-center gap-2 bg-brand-accent text-brand-dark px-6 py-4 rounded-xl font-bold hover:opacity-90 transition-all shadow-lg shadow-brand-accent/20"
+              className="flex items-center justify-center gap-2 btn-glass px-6 py-4 rounded-xl font-bold"
             >
               <Calendar className="w-5 h-5" />
               Book a Call

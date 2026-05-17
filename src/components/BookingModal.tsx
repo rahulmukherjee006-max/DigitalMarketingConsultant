@@ -71,16 +71,19 @@ export default function BookingModal() {
               </p>
               <button 
                 onClick={handleClose}
-                className="mt-8 bg-brand-accent text-brand-dark px-8 py-3 rounded-xl font-bold hover:opacity-90 transition-opacity"
+                className="mt-8 btn-glass px-8 py-3 rounded-xl font-bold"
               >
                 Close
               </button>
             </div>
           ) : (
             <div>
-              <div className="mb-8">
-                <h2 className="text-2xl md:text-3xl font-display font-bold text-text-main mb-2">Book a Call</h2>
-                <p className="text-text-muted">Select a date, time, and provide your phone number. We'll handle the rest.</p>
+              <div className="mb-8 text-center">
+                <div className="w-16 h-16 bg-brand-accent/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-brand-accent/20 shadow-inner">
+                  <Calendar className="w-8 h-8 text-brand-accent" />
+                </div>
+                <h2 className="text-2xl md:text-3xl font-display font-bold text-text-main mb-2">Schedule Consultation</h2>
+                <p className="text-text-muted">Pick a time that works for you. We'll handle the rest.</p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-5">
@@ -146,7 +149,7 @@ export default function BookingModal() {
                 <button 
                   type="submit"
                   disabled={!date || !timeRange || !phone}
-                  className="w-full mt-6 bg-brand-accent text-brand-dark py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-50"
+                  className="w-full mt-6 btn-glass py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2 disabled:opacity-50"
                 >
                   <CheckCircle className="w-5 h-5" />
                   Confirm Booking

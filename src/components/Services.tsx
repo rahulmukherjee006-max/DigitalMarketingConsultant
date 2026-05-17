@@ -157,25 +157,25 @@ export default function Services() {
               transition={{ delay: index * 0.05, duration: 0.2 }}
               className="glass-card p-6 md:p-8 flex flex-col h-full hover:bg-border-subtle/20 group shadow-xl"
             >
-              <div className="flex justify-between items-start mb-12">
-                <div className={`w-[60px] h-[60px] rounded-[16px] ${service.bg} flex items-center justify-center shrink-0`}>
+              <div className="flex justify-between items-start mb-8 md:mb-10">
+                <div className={`w-[50px] h-[50px] md:w-[64px] md:h-[64px] rounded-[16px] md:rounded-[20px] ${service.bg} flex items-center justify-center shrink-0`}>
                   {/* @ts-ignore */}
-                  <service.icon className="w-8 h-8" style={{ color: service.color }} />
+                  <service.icon className="w-6 h-6 md:w-8 md:h-8" style={{ color: service.color }} />
                 </div>
-                <div className="text-[56px] font-bold text-text-main/5 leading-none">
+                <div className="text-[48px] md:text-[64px] font-display font-extrabold text-text-main/5 leading-none tracking-tighter">
                   {service.num}
                 </div>
               </div>
-              <h3 className="text-[22px] font-bold mb-3 text-text-main leading-snug pr-4">{service.title}</h3>
+              <h3 className="text-[20px] md:text-[24px] font-bold mb-3 text-text-main leading-snug tracking-tight pr-4">{service.title}</h3>
               <div className="mb-4 flex flex-col items-start gap-1">
-                 <span className="text-brand-accent font-mono text-sm font-bold bg-brand-accent/10 px-3 py-1 rounded-md inline-block">
+                 <span className="text-brand-accent font-mono text-[13px] md:text-[14px] font-bold bg-brand-accent/10 px-3 md:px-3.5 py-1 md:py-1.5 rounded-lg inline-flex items-center">
                    {displayPrice}
                  </span>
                  {displayStrikeThrough && (
-                    <span className="text-xs text-text-muted opacity-80 line-through pl-1">{displayStrikeThrough}</span>
+                    <span className="text-[12px] md:text-[13px] font-mono font-medium text-text-muted opacity-70 line-through pl-1">{displayStrikeThrough}</span>
                  )}
               </div>
-              <p className="text-text-muted text-[15px] leading-relaxed mb-8 flex-grow pr-2">
+              <p className="text-text-muted text-[14px] md:text-[16px] leading-relaxed mb-8 flex-grow pr-2">
                 {service.description}
               </p>
               
@@ -187,13 +187,15 @@ export default function Services() {
                       inCart ? removeItem(item.id) : addItem(item);
                     }
                   }}
-                  className={`flex-grow h-10 rounded-full text-xs font-bold uppercase tracking-wider flex items-center justify-center transition-all ${
-                    inCart ? 'bg-brand-accent/20 text-brand-accent hover:bg-red-500/20 hover:text-red-400 border border-brand-accent/30 hover:border-red-500/30' : 'bg-text-main/10 text-text-main hover:bg-text-main/10'
+                  className={`flex-grow h-12 rounded-full text-[13px] font-bold uppercase tracking-[0.1em] flex items-center justify-center transition-all ${
+                    inCart 
+                      ? 'bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 dark:bg-red-900/20 dark:border-red-900/50 dark:text-red-400' 
+                      : 'bg-brand-accent/5 text-text-main border border-brand-accent/20 hover:bg-brand-accent/10'
                   }`}
                 >
                   {inCart ? 'Remove' : 'Add To Plan'}
                 </button>
-                <Link to={`/services/${service.slug}`} className="w-10 h-10 rounded-full border border-brand-accent/50 text-brand-accent flex items-center justify-center hover:bg-brand-accent hover:text-brand-dark transition-colors shrink-0">
+                <Link to={`/services/${service.slug}`} className="w-12 h-12 rounded-full border border-brand-accent/30 text-brand-accent flex items-center justify-center hover:bg-brand-accent hover:text-brand-dark transition-colors shrink-0">
                    <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
@@ -209,7 +211,7 @@ export default function Services() {
              </div>
              Want to grow your business?
           </div>
-          <a href="#contact" className="px-6 py-3 md:px-8 md:py-3.5 rounded-full bg-brand-accent text-brand-dark font-bold text-lg hover:opacity-90 transition-opacity">
+          <a href="#contact" className="btn-glass px-6 py-3 md:px-8 md:py-3.5 rounded-full font-bold text-lg">
             Get Free Consultation
           </a>
         </div>

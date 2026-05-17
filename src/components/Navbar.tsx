@@ -125,7 +125,7 @@ export default function Navbar() {
           </div>
           <a
             href="/build-plan"
-            className="group flex flex-nowrap items-center gap-1 lg:gap-2 bg-brand-accent text-brand-dark px-3 lg:px-5 py-2 rounded-full text-xs lg:text-sm font-bold hover:opacity-90 transition-all whitespace-nowrap"
+            className="group flex flex-nowrap items-center gap-1 lg:gap-2 btn-glass px-3 lg:px-5 py-2 rounded-full text-xs lg:text-sm font-bold whitespace-nowrap"
           >
             Build Your Plan
             <ArrowUpRight className="w-3 h-3 lg:w-4 lg:h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
@@ -136,7 +136,7 @@ export default function Navbar() {
         <div className="flex items-center gap-1.5 sm:gap-2 md:hidden ml-auto">
           <Link
             to="/build-plan"
-            className="flex items-center gap-1 bg-brand-accent text-brand-dark px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap"
+            className="flex items-center gap-1 btn-glass px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap"
             onClick={() => setIsOpen(false)}
           >
             <Calculator className="w-3.5 h-3.5" />
@@ -220,7 +220,7 @@ export default function Navbar() {
               <li className="mt-4">
                 <a
                   href="/build-plan"
-                  className="w-full inline-block text-center bg-brand-accent text-brand-dark py-3.5 rounded-full font-bold"
+                  className="w-full inline-block text-center btn-glass py-3.5 rounded-full font-bold"
                   onClick={() => setIsOpen(false)}
                 >
                   Build Your Plan

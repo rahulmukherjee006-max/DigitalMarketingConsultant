@@ -162,7 +162,7 @@ export default function Contact() {
                   <button 
                     disabled={formState === 'submitting'}
                     type="submit" 
-                    className="w-full bg-brand-accent text-brand-dark py-3.5 md:py-5 rounded-xl md:rounded-2xl font-bold text-base md:text-lg flex items-center justify-center gap-2 md:gap-3 hover:opacity-90 transition-all shadow-xl shadow-brand-accent/20 disabled:opacity-50"
+                    className="w-full btn-glass py-3.5 md:py-5 rounded-xl md:rounded-2xl font-bold text-base md:text-lg flex items-center justify-center gap-2 md:gap-3 disabled:opacity-50"
                   >
                     {formState === 'submitting' ? 'Sending...' : 'Request Consultation'}
                     <Send className="w-5 h-5" />

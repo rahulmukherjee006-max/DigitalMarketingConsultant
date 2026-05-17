@@ -75,7 +75,7 @@ export default function Hero() {
           <div className="flex flex-col items-center w-full sm:w-auto">
             <a
               href="#contact"
-              className="w-full sm:w-auto bg-brand-accent text-brand-dark px-6 py-3.5 md:px-8 md:py-5 rounded-full font-bold text-base md:text-lg flex items-center justify-center gap-2 md:gap-3 hover:opacity-90 transition-all shadow-xl shadow-brand-accent/20"
+              className="w-full sm:w-auto btn-glass px-6 py-3.5 md:px-8 md:py-5 rounded-full font-bold text-base md:text-lg flex items-center justify-center gap-2 md:gap-3"
             >
               Start Your Growth Journey
               <ArrowRight className="w-5 h-5" />

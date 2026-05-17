@@ -53,7 +53,7 @@ export default function Footer() {
                   placeholder="Email" 
                   className="flex-1 bg-bg-primary text-text-main rounded-xl px-4 text-sm border border-border-subtle focus:outline-none focus:ring-1 focus:ring-brand-accent placeholder:text-text-muted/50"
                 />
-                <button className="bg-brand-accent text-brand-dark p-2 rounded-xl hover:opacity-90 transition-opacity">
+                <button className="btn-glass p-2 rounded-xl">
                   <ArrowUp className="w-4 h-4" />
                 </button>
               </div>

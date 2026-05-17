@@ -153,16 +153,16 @@ export default function CaseStudies() {
                initial={{ opacity: 0, y: 20 }}
                whileInView={{ opacity: 1, y: 0 }}
                viewport={{ once: true }}
-               className="bg-brand-accent p-8 md:p-12 rounded-[32px] max-w-3xl w-full relative overflow-hidden shadow-[0_0_40px_-10px_rgba(204,255,0,0.3)]"
+               className="bg-brand-accent/5 border border-brand-accent/20 p-8 md:p-12 rounded-[32px] max-w-3xl w-full relative overflow-hidden backdrop-blur-md"
             >
-               <h3 className="text-2xl md:text-5xl font-display font-bold text-brand-dark mb-6 relative z-10 tracking-tight leading-tight">
+               <h3 className="text-2xl md:text-5xl font-display font-bold text-text-main mb-6 relative z-10 tracking-tight leading-tight">
                  Want results like this for your business? Get a free consultation.
                </h3>
                <button 
                   onClick={() => {
                     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="bg-bg-primary text-text-main px-6 py-3.5 md:px-8 md:py-4 rounded-xl font-bold hover:bg-bg-secondary hover:opacity-90 transition-all inline-block relative z-10 shadow-lg"
+                  className="btn-glass px-6 py-3.5 md:px-8 md:py-4 rounded-xl font-bold inline-block relative z-10 shadow-lg"
                >
                  Request Free Consultation &rarr;
                </button>

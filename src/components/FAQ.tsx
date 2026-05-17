@@ -72,7 +72,7 @@ export default function FAQ() {
           <p className="text-text-muted mb-8">Get a free consultation and we'll guide you step-by-step.</p>
           <a
             href="#contact"
-            className="inline-block px-6 py-3 md:px-8 md:py-3.5 rounded-full bg-brand-accent text-brand-dark font-bold text-lg hover:opacity-90 transition-opacity"
+            className="inline-block btn-glass px-6 py-3 md:px-8 md:py-3.5 rounded-full font-bold text-lg"
           >
             Get Free Consultation
           </a>

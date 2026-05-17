@@ -158,7 +158,7 @@ export default function AuthPage() {
                       </div>
                     </div>
 
-                    <button className="w-full bg-brand-accent text-brand-dark py-4 rounded-xl font-bold text-lg hover:shadow-[0_0_20px_rgba(204,255,0,0.3)] transition-all flex justify-center items-center gap-2 mt-6">
+                    <button className="w-full btn-glass py-4 rounded-xl font-bold text-lg flex justify-center items-center gap-2 mt-6">
                       {isLogin ? 'Sign In' : 'Create Account'}
                       <ArrowRight className="w-5 h-5" />
                     </button>

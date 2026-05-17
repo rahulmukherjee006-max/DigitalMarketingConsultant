@@ -209,10 +209,10 @@ export default function Pricing() {
                       inCart ? removeItem(item.id) : addItem(item);
                     }
                   }}
-                  className={`w-full py-4 rounded-xl flex items-center justify-center gap-2 font-bold mb-4 transition-all shadow-lg ${
+                  className={`w-full py-4 rounded-xl flex items-center justify-center gap-2 font-bold mb-4 shadow-lg ${
                     inCart 
-                      ? 'bg-text-main/10 text-text-main hover:bg-red-500/20 hover:text-red-400 hover:border-red-500/20' 
-                      : 'bg-brand-accent text-brand-dark hover:opacity-90'
+                      ? 'btn-glass-danger' 
+                      : 'btn-glass'
                   }`}
                 >
                   {inCart ? (
@@ -313,10 +313,10 @@ const AddonCard: React.FC<{ addon: typeof addons[0], index: number }> = ({ addon
                           inCart ? removeItem(item.id) : addItem(item);
                         }
                     }}
-                    className={`w-full py-2.5 text-xs font-bold uppercase tracking-wider flex justify-center items-center gap-2 transition-colors ${
+                    className={`w-full py-2.5 text-xs font-bold uppercase tracking-wider flex justify-center items-center gap-2 ${
                       inCart 
-                        ? 'bg-brand-accent/20 text-brand-accent hover:bg-red-500/20 hover:text-red-400' 
-                        : 'bg-text-main/5 text-text-main hover:bg-brand-accent hover:text-brand-dark'
+                        ? 'btn-glass-danger' 
+                        : 'btn-glass border-text-main/10'
                     }`}
                   >
                     {inCart ? (
